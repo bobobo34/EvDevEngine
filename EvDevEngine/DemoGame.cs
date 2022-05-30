@@ -76,7 +76,7 @@ namespace EvDevEngine
                 {
                     switch (direction)
                     {
-                        case Sprite2D.Direction.Left:
+                        case Sprite2D.Direction.Left:penis
                             player.Position.X = lastPos.X;
                             break;
                         case Sprite2D.Direction.Right:
