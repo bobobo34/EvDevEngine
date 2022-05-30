@@ -6,19 +6,17 @@ using System.Threading.Tasks;
 using EvDevEngine.EvDevEngine;
 using System.Drawing;
 using System.Windows.Forms;
+using OpenTK.Input;
+
 namespace EvDevEngine
 {
     class DemoGame : EvDevEngine.EvDevEngine
     {
         Sprite2D player;
 
-        bool left;
-        bool right;
-        bool up;
-        bool down;
         Vector2 lastPos = Vector2.Zero();
 
-        string[,] Map =
+        readonly string[,] Map =
         {
             { ".",".",".",".",".",".","." },
             { ".",".",".",".",".",".","." },
@@ -63,10 +61,10 @@ namespace EvDevEngine
         public override void Update()
         {
             //player.UpdatePosition();
-            if (up) { player.Position.Y -= MovementSpeed; }
-            if (right) { player.Position.X += MovementSpeed; }
-            if (down) { player.Position.Y += MovementSpeed; }
-            if (left) { player.Position.X -= MovementSpeed; }
+            if (Input.IsKeyDown(Key.W)) { player.Position.Y -= MovementSpeed; }
+            if (Input.IsKeyDown(Key.D)) { player.Position.X += MovementSpeed; }
+            if (Input.IsKeyDown(Key.S)) { player.Position.Y += MovementSpeed; }
+            if (Input.IsKeyDown(Key.A)) { player.Position.X -= MovementSpeed; }
 
             Sprite2D ground = player.IsColliding("ground");
             if(ground != null)
@@ -103,40 +101,12 @@ namespace EvDevEngine
 
         public override void GetKeyDown(KeyEventArgs e)
         {
-            //movement stuff
-            if(e.KeyCode == Keys.W) { up = true; }
-            if (e.KeyCode == Keys.S) { down = true; }
-            if (e.KeyCode == Keys.D) { right = true; }
-            if (e.KeyCode == Keys.A) { left = true; }
-            //
-
-            //zoom controls
-            if(e.KeyCode == Keys.Oemplus) 
-            { 
-                if(CameraZoom.X < 1.3f)
-                {
-                    CameraZoom.X += 0.1f;
-                    CameraZoom.Y += 0.1f;
-                }        
-            }
-            if (e.KeyCode == Keys.OemMinus)
-            {
-                if(CameraZoom.Y > 0.7f)
-                {
-                    CameraZoom.X -= 0.1f;
-                    CameraZoom.Y -= 0.1f;
-                }
-            }
-            //
-
+           
         }
 
         public override void GetKeyUp(KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W) { up = false; }
-            if (e.KeyCode == Keys.S) { down = false; }
-            if (e.KeyCode == Keys.D) { right = false; }
-            if (e.KeyCode == Keys.A) { left = false; }
+  
         }
         public override void FormClosing(FormClosingEventArgs e)
         {

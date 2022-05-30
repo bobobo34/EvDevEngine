@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
-using Box2DX.Collision;
-using Box2DX.Common;
-using Box2DX.Dynamics;
+using OpenTK.Input;
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -26,7 +24,7 @@ namespace EvDevEngine.EvDevEngine
         private string Title;
         private Canvas Window = null;
         public Thread GameLoopThread = null;
-        public static World world = null;
+        public KeyboardState Input;
 
         public static List<Shape2D> AllShapes = new List<Shape2D>();
         public static List<Sprite2D> AllSprites = new List<Sprite2D>();
@@ -117,6 +115,7 @@ namespace EvDevEngine.EvDevEngine
                     Draw();
                     Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
                     //rld.Step(timeStep, velocityIterations, positionIterations);
+                    Input = Keyboard.GetState();
                     Update();
                     Thread.Sleep(2);
                 } catch
