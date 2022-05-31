@@ -60,7 +60,7 @@ namespace EvDevEngine
 
         public override void Update()
         {
-            
+            Log.Warning((player.Sprite.Position == player.Sprite.LastPosition).ToString());
         }
 
         
