@@ -14,7 +14,7 @@ namespace EvDevEngine.EvDevEngine
     {
         public Canvas()
         {
-            this.DoubleBuffered = true;
+            DoubleBuffered = true;
         }
 
     }
@@ -24,23 +24,18 @@ namespace EvDevEngine.EvDevEngine
         private string Title;
         private Canvas Window = null;
         public Thread GameLoopThread = null;
-        public KeyboardState Input;
+        public static KeyboardState Input;
+        public bool UpdateObjectsBefore = true;
 
         public static List<Shape2D> AllShapes = new List<Shape2D>();
         public static List<Sprite2D> AllSprites = new List<Sprite2D>();
+        public static List<Object2D> AllObjects = new List<Object2D>();
         
-        public System.Drawing.Color BackgroundColor = System.Drawing.Color.White;
+        public Color BackgroundColor = Color.White;
 
-        public Vector2 CameraPosition = Vector2.Zero();
+        public Vector2 CameraPosition = Vector2.Zero;
         public float CameraAngle = 0f;
         public Vector2 CameraZoom = new Vector2(1, 1);
-
-        //AABB worldAABB = new AABB
-        //{
-        //    UpperBound = new Vec2(2000, 2000),
-        //    LowerBound = new Vec2(-2000, -2000)
-        //};
-        //Vec2 gravity = new Vec2(0.0f, 10.0f);
         
         public EvDevEngine(Vector2 ScreenSize, string Title)
         {
@@ -55,15 +50,10 @@ namespace EvDevEngine.EvDevEngine
                 FormBorderStyle = FormBorderStyle.FixedToolWindow
             };      
             Window.Paint += Renderer;
-            Window.KeyDown += Window_KeyDown;
-            Window.KeyUp += Window_KeyUp;
             Window.FormClosing += Window_FormClosing;
-            
             
             GameLoopThread = new Thread(GameLoop);
             GameLoopThread.Start();
-
-            //world = new World(worldAABB, gravity, false);
 
             Application.Run(Window);
         }
@@ -71,15 +61,6 @@ namespace EvDevEngine.EvDevEngine
         private void Window_FormClosing(object sender, FormClosingEventArgs e)
         {
             FormClosing(e); 
-        }
-
-        private void Window_KeyUp(object sender, KeyEventArgs e)
-        {
-            GetKeyUp(e);
-        }
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            GetKeyDown(e);
         }
      
         public static void RegisterShape(Shape2D shape)
@@ -101,9 +82,6 @@ namespace EvDevEngine.EvDevEngine
         {
             AllSprites.Remove(sprite);
         }
-        //float timeStep = 1.0f / 60.0f;
-        //int velocityIterations = 15;
-        //int positionIterations = 3;
         void GameLoop()
         {
             Load();
@@ -114,9 +92,8 @@ namespace EvDevEngine.EvDevEngine
                 {
                     Draw();
                     Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
-                    //rld.Step(timeStep, velocityIterations, positionIterations);
                     Input = Keyboard.GetState();
-                    Update();
+                    UpdateAll();
                     Thread.Sleep(2);
                 } catch
                 {
@@ -125,12 +102,34 @@ namespace EvDevEngine.EvDevEngine
             }
         }
 
+        private void UpdateAll()
+        {
+            if (UpdateObjectsBefore)
+            {
+                foreach (Object2D obj in AllObjects)
+                {
+                    foreach (Component child in obj.Children)
+                    {   
+                        child.OnUpdate();
+                    }
+                }
+                Update();
+            }
+            else
+            {
+                Update();
+                foreach (Object2D obj in AllObjects)
+                {
+                    foreach (Component child in obj.Children)
+                    {
+                        child.OnUpdate();
+                    }
+                }
+            }
+        }
         
         private void Renderer(object sender, PaintEventArgs e)
         {
-
-            
-
             Graphics g = e.Graphics;
             g.Clear(BackgroundColor);
             g.TranslateTransform(CameraPosition.X, CameraPosition.Y);
@@ -140,7 +139,7 @@ namespace EvDevEngine.EvDevEngine
             {
                 foreach(Shape2D shape in AllShapes)
                 {
-                    g.FillRectangle(new SolidBrush(System.Drawing.Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
+                    g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
                 }
                 foreach(Sprite2D sprite in AllSprites)
                 {
@@ -156,8 +155,6 @@ namespace EvDevEngine.EvDevEngine
 
         public abstract void Draw();
 
-        public abstract void GetKeyDown(KeyEventArgs e);
-        public abstract void GetKeyUp(KeyEventArgs e);
         public abstract void FormClosing(FormClosingEventArgs e);
 
 

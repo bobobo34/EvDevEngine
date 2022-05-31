@@ -12,9 +12,9 @@ namespace EvDevEngine
 {
     class DemoGame : EvDevEngine.EvDevEngine
     {
-        Sprite2D player;
+        public Player player;
 
-        Vector2 lastPos = Vector2.Zero();
+        public Vector2 lastPos = Vector2.Zero;
 
         readonly string[,] Map =
         {
@@ -44,8 +44,9 @@ namespace EvDevEngine
                 }
             }
             
-            player = new Sprite2D(new Vector2(0, 10), new Vector2(70, 70), "player", "Player");
-            //player.CreateDynamic();
+            Sprite2D PlayerSprite = new Sprite2D(new Vector2(0, 10), new Vector2(70, 70), "player", "Player");
+            player = new Player("MainPlayer", PlayerSprite);
+            
            
 
         }
@@ -57,57 +58,12 @@ namespace EvDevEngine
             
         }
 
-        float MovementSpeed = 5f;
         public override void Update()
         {
-            //player.UpdatePosition();
-            if (Input.IsKeyDown(Key.W)) { player.Position.Y -= MovementSpeed; }
-            if (Input.IsKeyDown(Key.D)) { player.Position.X += MovementSpeed; }
-            if (Input.IsKeyDown(Key.S)) { player.Position.Y += MovementSpeed; }
-            if (Input.IsKeyDown(Key.A)) { player.Position.X -= MovementSpeed; }
-
-            Sprite2D ground = player.IsColliding("ground");
-            if(ground != null)
-            {
-                List<Sprite2D.Direction> directions = player.GetCollisionDirections(ground);
-                foreach(Sprite2D.Direction direction in directions)
-                {
-                    switch (direction)
-                    {
-                        case Sprite2D.Direction.Left:
-                            player.Position.X = lastPos.X;
-                            break;
-                        case Sprite2D.Direction.Right:
-                            player.Position.X = lastPos.X;
-                            break;
-                        case Sprite2D.Direction.Up:
-                            player.Position.Y = lastPos.Y;
-                            break;
-                        case Sprite2D.Direction.Down:
-                            player.Position.Y = lastPos.Y;
-                            break;
-
-                    }
-                }
-            }
-            else
-            {
-                lastPos.X = player.Position.X;
-                lastPos.Y = player.Position.Y;
-            }
-
-
+            
         }
 
-        public override void GetKeyDown(KeyEventArgs e)
-        {
-           
-        }
-
-        public override void GetKeyUp(KeyEventArgs e)
-        {
-  
-        }
+        
         public override void FormClosing(FormClosingEventArgs e)
         {
             GameLoopThread.Abort();

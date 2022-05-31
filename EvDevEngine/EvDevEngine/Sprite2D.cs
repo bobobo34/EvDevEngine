@@ -10,9 +10,17 @@ using Box2DX.Dynamics;
 
 namespace EvDevEngine.EvDevEngine
 {
+    public enum Direction
+    { 
+        Up,
+        Down,
+        Left,
+        Right
+    }
     public class Sprite2D
     {
         public Vector2 Position = null;
+        public Vector2 LastPosition = null;
         public Vector2 Scale = null;
         public string Directory = "";
         public string Tag = "";
@@ -20,13 +28,6 @@ namespace EvDevEngine.EvDevEngine
         public bool IsReference = false;
         //BodyDef bodyDef = new BodyDef();
         //Body body;
-        public enum Direction
-        {
-            Up,
-            Down,
-            Left,
-            Right
-        }
         public Vector2 Min 
         { 
             get
@@ -46,6 +47,7 @@ namespace EvDevEngine.EvDevEngine
         public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
         {
             this.Position = Position;
+            this.LastPosition = Position;
             this.Scale = Scale;
             this.Directory = Directory;
             this.Tag = Tag;
@@ -67,55 +69,6 @@ namespace EvDevEngine.EvDevEngine
             Sprite = sprite;
         }
 
-        //public void CreateDynamic()
-        //{
-        //    bodyDef = new BodyDef();
-        //    bodyDef.Position = new Vec2(this.Position.X, this.Position.Y);
-        //    body = EvDevEngine.world.CreateBody(bodyDef);
-
-        //    // Define another box shape for our dynamic body.
-        //    PolygonDef shapeDef = new PolygonDef();
-        //    shapeDef.SetAsBox(Scale.X / 2, Scale.Y / 2);
-
-        //    // Set the box density to be non-zero, so it will be dynamic.
-        //    shapeDef.Density = 1.0f;
-
-        //    // Override the default friction.
-        //    shapeDef.Friction = 0.3f;
-
-        //    // Add the shape to the body.
-        //    body.CreateShape(shapeDef);
-
-        //    // Now tell the dynamic body to compute it's mass properties base
-        //    // on its shape.
-        //    body.SetMassFromShapes();
-        //}
-        //public void AddForce(Vector2 force, Vector2 point)
-        //{
-        //    body.ApplyImpulse(new Vec2(force.X * 1000, force.Y * 1000), new Vec2(point.X, point.Y));
-        //}
-        //public void UpdatePosition()
-        //{
-        //    this.Position.X = body.GetPosition().X;
-        //    this.Position.Y = body.GetPosition().Y;
-        //}
-
-        //public void CreateStatic()
-        //{
-        //    bodyDef = new BodyDef();
-        //    bodyDef.Position = new Vec2(this.Position.X, this.Position.Y);
-        //    body = EvDevEngine.world.CreateBody(bodyDef);
-
-        //    // Define the ground box shape.
-        //    PolygonDef groundShapeDef = new PolygonDef();
-
-        //    // The extents are the half-widths of the box.
-        //    groundShapeDef.SetAsBox(Scale.X / 2, Scale.Y / 2);
-
-        //    // Add the ground shape to the ground body.
-        //    body.CreateShape(groundShapeDef);
-
-        //}
         public Sprite2D(Vector2 Position, Vector2 Scale, Sprite2D reference, string Tag)
         {
             this.Position = Position;
@@ -144,6 +97,7 @@ namespace EvDevEngine.EvDevEngine
         {
             //Corner Matching
             //bottom right corner
+            Log.Warning($"player: min {Min.X}, {Min.Y} max {Max.X}, {Max.Y} b min {b.Min.X}, {b.Min.Y} max {b.Max.X}, {b.Max.Y}");
             if (Min.Y == b.Max.Y && Min.X == b.Max.X)
             {
                 //if the corner is floating, we don't need to worry about anything
