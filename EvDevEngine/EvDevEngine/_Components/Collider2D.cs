@@ -53,7 +53,8 @@ namespace EvDevEngine.EvDevEngine._Components
                             case Direction.Down:
                                 
                                 Log.Warning($"player pos: {Parent.Sprite.Position.X}, {Parent.Sprite.Position.Y} lastpos: {Parent.Sprite.LastPosition.X}, {Parent.Sprite.LastPosition.Y}");
-                                [WARNING] -player: min 0, 130 max 70, 200 b min 0, 200 max 50, 250
+                                //[WARNING] - player pos: 0, 130 lastpos: 0, 130
+                                //[WARNING] - player pos: 25, 130 lastpos: 25, 125
                                 Parent.Sprite.Position.Y = Parent.Sprite.LastPosition.Y;
                                 
                                 break;
