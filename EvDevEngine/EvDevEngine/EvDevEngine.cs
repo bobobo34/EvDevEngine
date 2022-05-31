@@ -33,7 +33,7 @@ namespace EvDevEngine.EvDevEngine
         
         public Color BackgroundColor = Color.White;
 
-        public Vector2 CameraPosition = Vector2.Zero;
+        public Vector2 CameraPosition = Vector2.Zero();
         public float CameraAngle = 0f;
         public Vector2 CameraZoom = new Vector2(1, 1);
         

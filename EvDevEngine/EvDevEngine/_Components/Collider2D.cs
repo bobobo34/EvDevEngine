@@ -9,7 +9,7 @@ namespace EvDevEngine.EvDevEngine._Components
     public class Collider2D : Component
     {
         public List<string> ColliderChecks = new List<string>();
-
+        public Vector2 LastPosition = Vector2.Zero();
         
         public Collider2D(List<string> ObjectsToCollideWith, Object2D Parent)
         {
@@ -42,21 +42,16 @@ namespace EvDevEngine.EvDevEngine._Components
                         switch (direction)
                         {
                             case Direction.Left:
-                                Parent.Sprite.Position.X = Parent.Sprite.LastPosition.X;
+                                Parent.Sprite.Position.X = LastPosition.X;
                                 break;
                             case Direction.Right:
-                                Parent.Sprite.Position.X = Parent.Sprite.LastPosition.X;
+                                Parent.Sprite.Position.X = LastPosition.X;
                                 break;
                             case Direction.Up:
-                                Parent.Sprite.Position.Y = Parent.Sprite.LastPosition.Y;
+                                Parent.Sprite.Position.Y = LastPosition.Y;
                                 break;
-                            case Direction.Down:
-                                
-                                Log.Warning($"player pos: {Parent.Sprite.Position.X}, {Parent.Sprite.Position.Y} lastpos: {Parent.Sprite.LastPosition.X}, {Parent.Sprite.LastPosition.Y}");
-                                //[WARNING] - player pos: 0, 130 lastpos: 0, 130
-                                //[WARNING] - player pos: 25, 130 lastpos: 25, 125
-                                Parent.Sprite.Position.Y = Parent.Sprite.LastPosition.Y;
-                                
+                            case Direction.Down:                                                       
+                                Parent.Sprite.Position.Y = LastPosition.Y;                              
                                 break;
 
                         }
@@ -64,8 +59,8 @@ namespace EvDevEngine.EvDevEngine._Components
                 }
                 else
                 {
-                    Parent.Sprite.LastPosition.X = Parent.Sprite.Position.X;
-                    Parent.Sprite.LastPosition.Y = Parent.Sprite.Position.Y;
+                    LastPosition.X = Parent.Sprite.Position.X;
+                    LastPosition.Y = Parent.Sprite.Position.Y;
                 }
             }
         }

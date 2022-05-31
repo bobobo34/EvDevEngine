@@ -14,8 +14,6 @@ namespace EvDevEngine
     {
         public Player player;
 
-        public Vector2 lastPos = Vector2.Zero;
-
         readonly string[,] Map =
         {
             { ".",".",".",".",".",".","." },
@@ -60,7 +58,8 @@ namespace EvDevEngine
 
         public override void Update()
         {
-            Log.Warning((player.Sprite.Position == player.Sprite.LastPosition).ToString());
+            Log.Info(Vector2.Zero().X.ToString());
+
         }
 
         

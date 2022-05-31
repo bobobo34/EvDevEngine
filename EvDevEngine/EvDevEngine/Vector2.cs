@@ -10,12 +10,11 @@ namespace EvDevEngine.EvDevEngine
     {
         public float X;
         public float Y;
-        public static readonly Vector2 Zero = new Vector2(0, 0);
 
         public Vector2()
         {
-            X = Zero.X;
-            Y = Zero.Y;
+            X = Zero().X;
+            Y = Zero().Y;
         }
         public Vector2(Vector2 vec)
         {
@@ -44,7 +43,10 @@ namespace EvDevEngine.EvDevEngine
             return true;
         }
     
-
+        public static Vector2 Zero()
+        {
+            return new Vector2(0, 0);
+        }
         
     }
 }

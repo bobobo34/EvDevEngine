@@ -20,7 +20,6 @@ namespace EvDevEngine.EvDevEngine
     public class Sprite2D
     {
         public Vector2 Position = null;
-        public Vector2 LastPosition = null;
         public Vector2 Scale = null;
         public string Directory = "";
         public string Tag = "";
@@ -47,7 +46,6 @@ namespace EvDevEngine.EvDevEngine
         public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
         {
             this.Position = Position;
-            this.LastPosition = Position;
             this.Scale = Scale;
             this.Directory = Directory;
             this.Tag = Tag;

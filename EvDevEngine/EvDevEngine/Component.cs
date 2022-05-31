@@ -8,7 +8,8 @@ namespace EvDevEngine.EvDevEngine
 {
     public enum Components
     {
-        Collider2D
+        Collider2D,
+        WASDMovement
     }
     public abstract class Component
     {

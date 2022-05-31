@@ -11,7 +11,6 @@ namespace EvDevEngine.EvDevEngine
         public string ID;
         public Sprite2D Sprite = null;
         public List<Component> Children = new List<Component>();
-        public Vector2 Position = Vector2.Zero;
 
         public Object2D(string ID, Sprite2D sprite)
         {
