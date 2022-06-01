@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using EvDevEngine.EvDevEngine;
 using System.Drawing;
 using System.Windows.Forms;
-using OpenTK.Input;
 
 namespace EvDevEngine
 {
