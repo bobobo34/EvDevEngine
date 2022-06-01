@@ -95,7 +95,7 @@ namespace EvDevEngine.EvDevEngine
         {
             //Corner Matching
             //bottom right corner
-            Log.Warning($"player: min {Min.X}, {Min.Y} max {Max.X}, {Max.Y} b min {b.Min.X}, {b.Min.Y} max {b.Max.X}, {b.Max.Y}");
+            
             if (Min.Y == b.Max.Y && Min.X == b.Max.X)
             {
                 //if the corner is floating, we don't need to worry about anything

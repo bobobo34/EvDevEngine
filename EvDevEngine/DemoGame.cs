@@ -58,7 +58,6 @@ namespace EvDevEngine
 
         public override void Update()
         {
-            Log.Info(Vector2.Zero().X.ToString());
 
         }
 
