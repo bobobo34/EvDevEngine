@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace EvDevEngine.EvDevEngine._Components
 {
@@ -26,7 +27,7 @@ namespace EvDevEngine.EvDevEngine._Components
             Name = "Collider2D";
             ColliderChecks.Add(ObjectToCollideWith);
         }
-        public override void OnUpdate()
+        public override void OnUpdate(GameTime gameTime)
         {
             foreach(string s in ColliderChecks)
             {
@@ -65,7 +66,7 @@ namespace EvDevEngine.EvDevEngine._Components
             }
         }
         public override void Destroy() { }
-        public override void OnDraw() { }
+        public override void OnDraw(GameTime gameTime) { }
         public override void OnLoad() { }
 
 

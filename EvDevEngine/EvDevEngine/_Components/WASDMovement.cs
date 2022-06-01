@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenTK.Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace EvDevEngine.EvDevEngine._Components
 {
@@ -22,18 +23,18 @@ namespace EvDevEngine.EvDevEngine._Components
         public override void Destroy() { }
 
 
-        public override void OnDraw() { }
+        public override void OnDraw(GameTime gameTime) { }
 
 
         public override void OnLoad() { }
 
 
-        public override void OnUpdate()
+        public override void OnUpdate(GameTime gameTime)
         {
-            if (EvDevEngine.Input.IsKeyDown(Key.W)) { Parent.Sprite.Position.Y -= MovementSpeed; }
-            if (EvDevEngine.Input.IsKeyDown(Key.D)) { Parent.Sprite.Position.X += MovementSpeed; }
-            if (EvDevEngine.Input.IsKeyDown(Key.S)) { Parent.Sprite.Position.Y += MovementSpeed; }
-            if (EvDevEngine.Input.IsKeyDown(Key.A)) { Parent.Sprite.Position.X -= MovementSpeed; }
+            if (EvDevEngine.Input.IsKeyDown(Keys.W)) { Parent.Sprite.Position.Y -= MovementSpeed; }
+            if (EvDevEngine.Input.IsKeyDown(Keys.D)) { Parent.Sprite.Position.X += MovementSpeed; }
+            if (EvDevEngine.Input.IsKeyDown(Keys.S)) { Parent.Sprite.Position.Y += MovementSpeed; }
+            if (EvDevEngine.Input.IsKeyDown(Keys.A)) { Parent.Sprite.Position.X -= MovementSpeed; }
         }
     }
 }

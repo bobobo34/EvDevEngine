@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -16,9 +18,9 @@ namespace EvDevEngine.EvDevEngine
         public string Name;
         public Object2D Parent;
         public abstract void OnLoad();
-        public abstract void OnDraw();
+        public abstract void OnDraw(GameTime gameTime);
 
-        public abstract void OnUpdate();
+        public abstract void OnUpdate(GameTime gameTime);
         public abstract void Destroy();
 
     }

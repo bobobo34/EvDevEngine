@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using System.IO;
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -21,7 +23,7 @@ namespace EvDevEngine.EvDevEngine
         public Vector2 Scale = null;
         public string Directory = "";
         public string Tag = "";
-        public Image Sprite = null;
+        public Texture2D Sprite = null;
         public bool IsReference = false;
         //BodyDef bodyDef = new BodyDef();
         //Body body;
@@ -41,7 +43,8 @@ namespace EvDevEngine.EvDevEngine
                 return new Vector2(Position.X + Scale.X, Position.Y + Scale.Y);
             }
         }
-        public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
+        
+        public Sprite2D(GraphicsDevice GraphicsDevice, Vector2 Position, Vector2 Scale, string Directory, string Tag)
         {
             this.Position = Position;
             this.Scale = Scale;
@@ -50,19 +53,32 @@ namespace EvDevEngine.EvDevEngine
 
             Image tmp = Image.FromFile($"Assets/Sprites/{Directory}.png");
             Bitmap sprite = new Bitmap(tmp);
-            Sprite = sprite;
+            Sprite = null;
+            using (MemoryStream s = new MemoryStream())
+            {
+                sprite.Save(s, System.Drawing.Imaging.ImageFormat.Png);
+                s.Seek(0, SeekOrigin.Begin); //must do this, or error is thrown in next line
+                Sprite = Texture2D.FromStream(GraphicsDevice, s);
+            }
+
 
             Log.Info($"[SHAPE2D]({Tag}) - Has been registered!");
             EvDevEngine.RegisterSprite(this);
         }
-        public Sprite2D(string Directory)
+        public Sprite2D(GraphicsDevice GraphicsDevice, string Directory)
         {
             this.IsReference = true;
             this.Directory = Directory;
 
             Image tmp = Image.FromFile($"Assets/Sprites/{Directory}.png");
             Bitmap sprite = new Bitmap(tmp);
-            Sprite = sprite;
+            Sprite = null;
+            using (MemoryStream s = new MemoryStream())
+            {
+                sprite.Save(s, System.Drawing.Imaging.ImageFormat.Png);
+                s.Seek(0, SeekOrigin.Begin); //must do this, or error is thrown in next line
+                Sprite = Texture2D.FromStream(GraphicsDevice, s);
+            }
         }
 
         public Sprite2D(Vector2 Position, Vector2 Scale, Sprite2D reference, string Tag)

@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using EvDevEngine.EvDevEngine;
 using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EvDevEngine
 {
     class DemoGame : EvDevEngine.EvDevEngine
     {
         public Player player;
+        public Texture2D PlayerTexture;
 
         readonly string[,] Map =
         {
@@ -22,13 +25,13 @@ namespace EvDevEngine
             { "g","g","g","g","g","g","g" },
             { ".",".",".",".",".",".","." }
         };
-        public DemoGame() : base(new Vector2(615, 515), "EvDevEngine Demo") { }
+        public DemoGame() : base(new EvDevEngine.Vector2(615, 515), "EvDevEngine Demo") { }
 
         public override void Load()
         {
-            BackgroundColor = Color.Black;
+            BackgroundColor = Microsoft.Xna.Framework.Color.Black;
             
-            Sprite2D groundRef = new Sprite2D("player");
+            Sprite2D groundRef = new Sprite2D(Window.GraphicsDevice, "player");
 
             for (int i = 0; i < Map.GetLength(1); i++)
             {
@@ -36,12 +39,12 @@ namespace EvDevEngine
                 {
                     if (Map[j, i] == "g")
                     {
-                        new Sprite2D(new Vector2(i * 50, j * 50), new Vector2(50, 50), groundRef, "ground");
+                        new Sprite2D(new EvDevEngine.Vector2(i * 50, j * 50), new EvDevEngine.Vector2(50, 50), groundRef, "ground");
                     }
                 }
             }
             
-            Sprite2D PlayerSprite = new Sprite2D(new Vector2(0, 10), new Vector2(70, 70), "player", "Player");
+            Sprite2D PlayerSprite = new Sprite2D(Window.GraphicsDevice, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(70, 70), "player", "Player");
             player = new Player("MainPlayer", PlayerSprite);
             
            
@@ -50,20 +53,21 @@ namespace EvDevEngine
 
 
 
-        public override void Draw()
+        public override void Draw(GameTime gameTime)
         {
+            
+            
             
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
 
         }
 
-        
-        public override void FormClosing(FormClosingEventArgs e)
+        public override void Unload()
         {
-            GameLoopThread.Abort();
+            
         }
     }
 }
