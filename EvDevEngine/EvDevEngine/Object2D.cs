@@ -31,9 +31,9 @@ namespace EvDevEngine.EvDevEngine
             Children = Children.Where(x => x != component).ToList();
         }
 
-        public Component GetComponent<T>()
+        public T GetComponent<T>()
         {
-            return Children.Find(x => x.GetType() == typeof(T));
+            return (T)Convert.ChangeType(Children.Find(x => x.GetType() == typeof(T)), typeof(T));
         }
         public void RegisterObject()
         {

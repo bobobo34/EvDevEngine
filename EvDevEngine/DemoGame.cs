@@ -31,20 +31,21 @@ namespace EvDevEngine
         {
             BackgroundColor = Microsoft.Xna.Framework.Color.Black;
             
-            Sprite2D groundRef = new Sprite2D(Window.GraphicsDevice, "player");
+            Sprite2D groundRef = new Sprite2D(Window, "player");
 
             for (int i = 0; i < Map.GetLength(1); i++)
             {
                 for (int j = 0; j < Map.GetLength(0); j++)
                 {
+
                     if (Map[j, i] == "g")
                     {
-                        new Sprite2D(new EvDevEngine.Vector2(i * 50, j * 50), new EvDevEngine.Vector2(50, 50), groundRef, "ground");
+                        new Sprite2D(new EvDevEngine.Vector2(i * 50 + 50, j * 50), new EvDevEngine.Vector2(50, 50), groundRef, "ground");
                     }
                 }
             }
             
-            Sprite2D PlayerSprite = new Sprite2D(Window.GraphicsDevice, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(70, 70), "player", "Player");
+            Sprite2D PlayerSprite = new Sprite2D(Window, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(70, 70), "player", "Player");
             player = new Player("MainPlayer", PlayerSprite);
             
            
@@ -52,7 +53,10 @@ namespace EvDevEngine
         }
 
 
-
+        public override void Initialize()
+        {
+            
+        }
         public override void Draw(GameTime gameTime)
         {
             

@@ -30,6 +30,9 @@ namespace EvDevEngine.EvDevEngine
             this.UpdateFunc = UpdateFunc;
             this.DrawFunc = DrawFunc;
             this.graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width;
+            graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height;
+            
             this.Content.RootDirectory = "Content";
             this.IsFixedTimeStep = true;
             this.IsMouseVisible = true;
@@ -96,7 +99,7 @@ namespace EvDevEngine.EvDevEngine
             this.ScreenSize = ScreenSize;
             this.Title = Title;
 
-            Window = new Canvas(null, Load, Unload, UpdateAll, Draw);
+            Window = new Canvas(Initialize, Load, Unload, UpdateAll, Draw);
 
             Window.Run();
             //GameLoopThread = new Thread(GameLoop);
@@ -171,7 +174,7 @@ namespace EvDevEngine.EvDevEngine
                 }
             }
         }
-        
+
         //private void Renderer(object sender, PaintEventArgs e)
         //{
         //    Graphics g = e.Graphics;
@@ -192,7 +195,7 @@ namespace EvDevEngine.EvDevEngine
         //    } catch { Log.Warning("Images are still being processed..."); }
 
         //}
-        
+        public abstract void Initialize();
         public abstract void Load();
 
         public abstract void Update(GameTime gameTime);

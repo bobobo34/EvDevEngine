@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System.IO;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -25,8 +25,7 @@ namespace EvDevEngine.EvDevEngine
         public string Tag = "";
         public Texture2D Sprite = null;
         public bool IsReference = false;
-        //BodyDef bodyDef = new BodyDef();
-        //Body body;
+
         public Vector2 Min 
         { 
             get
@@ -44,42 +43,26 @@ namespace EvDevEngine.EvDevEngine
             }
         }
         
-        public Sprite2D(GraphicsDevice GraphicsDevice, Vector2 Position, Vector2 Scale, string Directory, string Tag)
+        public Sprite2D(Game game, Vector2 Position, Vector2 Scale, string Directory, string Tag)
         {
             this.Position = Position;
             this.Scale = Scale;
             this.Directory = Directory;
             this.Tag = Tag;
 
-            Image tmp = Image.FromFile($"Assets/Sprites/{Directory}.png");
-            Bitmap sprite = new Bitmap(tmp);
-            Sprite = null;
-            using (MemoryStream s = new MemoryStream())
-            {
-                sprite.Save(s, System.Drawing.Imaging.ImageFormat.Png);
-                s.Seek(0, SeekOrigin.Begin); //must do this, or error is thrown in next line
-                Sprite = Texture2D.FromStream(GraphicsDevice, s);
-            }
+            Sprite = game.Content.Load<Texture2D>(Directory);
 
 
             Log.Info($"[SHAPE2D]({Tag}) - Has been registered!");
             EvDevEngine.RegisterSprite(this);
         }
-        public Sprite2D(GraphicsDevice GraphicsDevice, string Directory)
+        public Sprite2D(Game game, string Directory)
         {
             this.IsReference = true;
             this.Directory = Directory;
 
-            Image tmp = Image.FromFile($"Assets/Sprites/{Directory}.png");
-            Bitmap sprite = new Bitmap(tmp);
-            Sprite = null;
-            using (MemoryStream s = new MemoryStream())
-            {
-                sprite.Save(s, System.Drawing.Imaging.ImageFormat.Png);
-                s.Seek(0, SeekOrigin.Begin); //must do this, or error is thrown in next line
-                Sprite = Texture2D.FromStream(GraphicsDevice, s);
-            }
-        }
+            Sprite = game.Content.Load<Texture2D>(Directory);
+        }   
 
         public Sprite2D(Vector2 Position, Vector2 Scale, Sprite2D reference, string Tag)
         {
@@ -93,81 +76,6 @@ namespace EvDevEngine.EvDevEngine
             EvDevEngine.RegisterSprite(this);
         }
 
-        public bool IsColliding(Sprite2D a, Sprite2D b)
-        {
-            if(a.Min.X < b.Max.X &&
-                a.Max.X > b.Min.X && 
-                a.Min.Y < b.Max.Y &&
-                a.Max.Y > b.Min.Y)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public List<Direction> GetCollisionDirections(Sprite2D b)
-        {
-            //Corner Matching
-            //bottom right corner
-            
-            if (Min.Y == b.Max.Y && Min.X == b.Max.X)
-            {
-                //if the corner is floating, we don't need to worry about anything
-                if (b.Max.IsFloatingPoint(new List<Sprite2D> { this, b }))
-                {
-                    return new List<Direction> { };
-                }
-            }
-            //bottom left corner
-            if (Min.Y == b.Max.Y && Max.X == b.Min.X)
-            {
-                if (new Vector2(b.Min.X, b.Max.Y).IsFloatingPoint(new List<Sprite2D> { this, b }))
-                {
-                    return new List<Direction> { };
-                }
-            }
-            //top right corner
-            if (Max.Y == b.Min.Y && Min.X == b.Max.X)
-            {
-                if (new Vector2(b.Max.X, b.Min.Y).IsFloatingPoint(new List<Sprite2D> { this, b }))
-                {
-                    return new List<Direction> { };
-                }
-            }
-            //top left corner
-            if (Max.Y == b.Min.Y && Max.X == b.Min.X)
-            {
-                if (b.Min.IsFloatingPoint(new List<Sprite2D> { this, b }))
-                {
-                    return new List<Direction> { };
-                }
-            }
-            //Regular Directions
-            if (Min.Y == b.Max.Y) return new List<Direction> { Direction.Up };
-            if (Max.Y == b.Min.Y) return new List<Direction> { Direction.Down };
-            if (Min.X == b.Max.X) return new List<Direction> { Direction.Left };
-            if (Max.X == b.Min.X) return new List<Direction> { Direction.Right };
-
-            //if the weird corner glitch happens (i dont know how to fix it)
-            return new List<Direction> { Direction.Left, Direction.Right, Direction.Up, Direction.Down };
-        }
-        public Sprite2D IsColliding(string tag)
-        {
-            foreach(Sprite2D b in EvDevEngine.AllSprites)
-            {
-                if(b.Tag == tag)
-                {
-                    if (Min.X <= b.Max.X &&
-                       Max.X >= b.Min.X &&
-                       Min.Y <= b.Max.Y &&
-                       Max.Y >= b.Min.Y)
-                    {
-                        return b;
-                    }
-                }
-            }
-            return null;
-        }
         public void DestroySelf()
         {
             Log.Info($"[SHAPE2D]({Tag}) - Has been destroyed!");

@@ -27,47 +27,18 @@ namespace EvDevEngine.EvDevEngine._Components
             Name = "Collider2D";
             ColliderChecks.Add(ObjectToCollideWith);
         }
-        public override void OnUpdate(GameTime gameTime)
+   
+        public Sprite2D WillCollide(Vector2 NewPos, Vector2 Scale)
         {
-            foreach(string s in ColliderChecks)
+            Rectangle spriteRectangle = new Rectangle((int)NewPos.X, (int)NewPos.Y, (int)Scale.X, (int)Scale.Y);
+            foreach (Sprite2D sprite in EvDevEngine.AllSprites)
             {
-                Sprite2D sprite = Parent.Sprite.IsColliding(s);
-                if(sprite != null)
-                {
-                    
-                    List<Direction> directions = Parent.Sprite.GetCollisionDirections(sprite);
-                    
-                    foreach (Direction direction in directions)
-                    {
-                        
-                        switch (direction)
-                        {
-                            case Direction.Left:
-                                Parent.Sprite.Position.X = LastPosition.X;
-                                break;
-                            case Direction.Right:
-                                Parent.Sprite.Position.X = LastPosition.X;
-                                break;
-                            case Direction.Up:
-                                Parent.Sprite.Position.Y = LastPosition.Y;
-                                break;
-                            case Direction.Down:                                                       
-                                Parent.Sprite.Position.Y = LastPosition.Y;                              
-                                break;
-
-                        }
-                    }
-                }
-                else
-                {
-                    LastPosition.X = Parent.Sprite.Position.X;
-                    LastPosition.Y = Parent.Sprite.Position.Y;
-                }
+                if (!ColliderChecks.Contains(sprite.Tag)) continue;
+                Rectangle rectange = new Rectangle((int)sprite.Position.X, (int)sprite.Position.Y, (int)sprite.Scale.X, (int)sprite.Scale.Y);
+                if (spriteRectangle.Intersects(rectange)) return sprite;
             }
+            return null;
         }
-        public override void Destroy() { }
-        public override void OnDraw(GameTime gameTime) { }
-        public override void OnLoad() { }
 
 
 

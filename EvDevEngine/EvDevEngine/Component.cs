@@ -17,11 +17,11 @@ namespace EvDevEngine.EvDevEngine
     {
         public string Name;
         public Object2D Parent;
-        public abstract void OnLoad();
-        public abstract void OnDraw(GameTime gameTime);
+        public virtual void OnLoad() { }
+        public virtual void OnDraw(GameTime gameTime) { }
 
-        public abstract void OnUpdate(GameTime gameTime);
-        public abstract void Destroy();
+        public virtual void OnUpdate(GameTime gameTime) { }
+        public virtual void Destroy() { }
 
     }
 }
