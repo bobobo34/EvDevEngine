@@ -31,8 +31,11 @@ namespace EvDevEngine.EvDevEngine
             this.UpdateFunc = UpdateFunc;
             this.DrawFunc = DrawFunc;
             this.graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width;
-            graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height;
+
+            if (GraphicsDevice == null) graphics.ApplyChanges();
+            graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            graphics.ApplyChanges();
             
             this.Content.RootDirectory = "Content";
             this.IsFixedTimeStep = true;
@@ -122,7 +125,8 @@ namespace EvDevEngine.EvDevEngine
             this.Title = Title;
 
             Window = new Canvas(Initialize, Load, Unload, UpdateAll, Draw);
-
+            Window.Window.Title = this.Title;
+            //Microsoft.Xna.Framework.Rectangle window = new Microsoft.Xna.Framework.Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y);
             Window.Run();
     
 

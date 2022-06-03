@@ -24,7 +24,7 @@ namespace EvDevEngine
             { "g","g","g","g","g","g","g" },
             { ".",".",".",".",".",".","." }
         };
-        public DemoGame() : base(new EvDevEngine.Vector2(615, 515), "EvDevEngine Demo") { }
+        public DemoGame() : base(new EvDevEngine.Vector2(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height), "Killer Whale Mania!") { }
 
         public override void Load()
         {
