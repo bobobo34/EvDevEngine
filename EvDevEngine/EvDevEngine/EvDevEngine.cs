@@ -22,6 +22,7 @@ namespace EvDevEngine.EvDevEngine
         public Action<GameTime> UpdateFunc = null;
         public Action<GameTime> DrawFunc = null;
         public SpriteBatch sprites;
+        public int Updates = 0;
         public Canvas(Action InitFunc, Action LoadFunc, Action UnloadFunc, Action<GameTime> UpdateFunc, Action<GameTime> DrawFunc) : base() 
         {
             this.InitFunc = InitFunc;
@@ -57,6 +58,8 @@ namespace EvDevEngine.EvDevEngine
         }
         protected override void Update(GameTime gameTime)
         {
+            Updates++;
+            if (Updates == int.MaxValue) Updates = 7;
             UpdateFunc?.Invoke(gameTime);
             base.Update(gameTime);
         }
@@ -64,10 +67,29 @@ namespace EvDevEngine.EvDevEngine
         {
             this.GraphicsDevice.Clear(EvDevEngine.BackgroundColor);
             this.sprites.Begin();
-            foreach(Sprite2D sprite in EvDevEngine.AllSprites)
+            foreach(Object2D @object in EvDevEngine.AllObjects)
             {
-                Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)sprite.Position.X, (int)sprite.Position.Y, (int)sprite.Scale.X, (int)sprite.Scale.Y);
-                this.sprites.Draw(sprite.Sprite, rectangle, Microsoft.Xna.Framework.Color.White);
+                Animation2D animation = @object.GetComponent<Animation2D>();
+                if (animation != null)
+                {
+                    if (animation.condition() && !animation.Animating)
+                    {
+                        animation.BeginAnimation(Updates);
+                    }
+                    if (animation.Animating)
+                    {
+                        animation.StepAnimation(sprites, Updates);
+                    }
+                    else
+                    {
+
+                        this.sprites.Draw(layerDepth: 0f, rotation: 0f, origin: XNAfuncs.Vec2(Vector2.Zero()), texture: @object.Sprite.Sprite, destinationRectangle: @object.Sprite.rectangle, sourceRectangle: null, color: Microsoft.Xna.Framework.Color.White, effects: @object.Sprite.Flipped);
+                    }
+                }
+                else
+                {
+                    this.sprites.Draw(@object.Sprite.Sprite, @object.Sprite.rectangle, Microsoft.Xna.Framework.Color.White);
+                }
             }
             DrawFunc?.Invoke(gameTime);
             this.sprites.End();
@@ -102,8 +124,7 @@ namespace EvDevEngine.EvDevEngine
             Window = new Canvas(Initialize, Load, Unload, UpdateAll, Draw);
 
             Window.Run();
-            //GameLoopThread = new Thread(GameLoop);
-            //GameLoopThread.Start();
+    
 
         }
 
@@ -128,26 +149,7 @@ namespace EvDevEngine.EvDevEngine
         {
             AllSprites.Remove(sprite);
         }
-        //void GameLoop()
-        //{
-        //    Load();
-
-        //    while (GameLoopThread.IsAlive)
-        //    {
-        //        try
-        //        {
-        //            Draw();
-        //            Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
-        //            Input = Keyboard.GetState();
-        //            UpdateAll();
-        //            Thread.Sleep(2);
-        //        } catch
-        //        {
-        //            Log.Error("Window has not been found...");
-        //        }
-        //    }
-        //}
-
+        
         private void UpdateAll(GameTime gameTime)
         {
             Input = Keyboard.GetState();
@@ -175,26 +177,7 @@ namespace EvDevEngine.EvDevEngine
             }
         }
 
-        //private void Renderer(object sender, PaintEventArgs e)
-        //{
-        //    Graphics g = e.Graphics;
-        //    g.Clear(BackgroundColor);
-        //    g.TranslateTransform(CameraPosition.X, CameraPosition.Y);
-        //    g.RotateTransform(CameraAngle);
-        //    g.ScaleTransform(CameraZoom.X, CameraZoom.Y);
-        //    try
-        //    {
-        //        foreach(Shape2D shape in AllShapes)
-        //        {
-        //            g.FillRectangle(new SolidBrush(System.Drawing.Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
-        //        }
-        //        foreach(Sprite2D sprite in AllSprites)
-        //        {
-        //            g.DrawImage(sprite.Sprite, sprite.Position.X, sprite.Position.Y, sprite.Scale.X, sprite.Scale.Y);
-        //        }
-        //    } catch { Log.Warning("Images are still being processed..."); }
-
-        //}
+        
         public abstract void Initialize();
         public abstract void Load();
 

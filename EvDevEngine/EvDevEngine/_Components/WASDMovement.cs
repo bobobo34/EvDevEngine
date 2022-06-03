@@ -5,30 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EvDevEngine.EvDevEngine._Components
 {
     public class WASDMovement : Component
     {
         public float MovementSpeed = 6.5f;
+        public bool Moving = false;
+        
         public float TrueMovementSpeed(GameTime gameTime)
         {
             return (float)Math.Pow(MovementSpeed, 3) * (float)gameTime.ElapsedGameTime.TotalSeconds;          
         }
-        public WASDMovement(Object2D Parent, float MovementSpeed)
+        public WASDMovement(float MovementSpeed)
         {
-            this.Parent = Parent;
             this.MovementSpeed = MovementSpeed;
         }
-        public WASDMovement(Object2D Parent)
-        {
-            this.Parent=Parent;
-        }
+        public WASDMovement() { }
 
         public override void OnUpdate(GameTime gameTime)
         {
             Collider2D collider = Parent.GetComponent<Collider2D>();
-            
+            if (!EvDevEngine.Input.IsKeyDown(Keys.W) && !EvDevEngine.Input.IsKeyDown(Keys.A) && !EvDevEngine.Input.IsKeyDown(Keys.S) && !EvDevEngine.Input.IsKeyDown(Keys.D)) Moving = false;
+            else Moving = true;
             if (EvDevEngine.Input.IsKeyDown(Keys.W))
             {
                 if (collider != null)
@@ -46,6 +46,7 @@ namespace EvDevEngine.EvDevEngine._Components
             }
             if (EvDevEngine.Input.IsKeyDown(Keys.D)) 
             {
+                Parent.Sprite.Flipped = SpriteEffects.None;
                 if (collider != null)
                 {
 
@@ -77,6 +78,7 @@ namespace EvDevEngine.EvDevEngine._Components
             }
             if (EvDevEngine.Input.IsKeyDown(Keys.A)) 
             {
+                Parent.Sprite.Flipped = SpriteEffects.FlipHorizontally;
                 if (collider != null)
                 {
                     

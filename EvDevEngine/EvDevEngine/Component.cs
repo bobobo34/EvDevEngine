@@ -8,11 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace EvDevEngine.EvDevEngine
 {
-    public enum Components
-    {
-        Collider2D,
-        WASDMovement
-    }
+  
     public abstract class Component
     {
         public string Name;

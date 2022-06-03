@@ -25,6 +25,14 @@ namespace EvDevEngine.EvDevEngine
         public string Tag = "";
         public Texture2D Sprite = null;
         public bool IsReference = false;
+        public SpriteEffects Flipped = SpriteEffects.None;
+        public Rectangle rectangle
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)Scale.X, (int)Scale.Y);
+            }
+        }
 
         public Vector2 Min 
         { 

@@ -21,6 +21,7 @@ namespace EvDevEngine.EvDevEngine
 
         public void AddComponent(Component Component)
         {
+            Component.Parent = this;
             Children.Add(Component);
         }
 
@@ -34,6 +35,10 @@ namespace EvDevEngine.EvDevEngine
         public T GetComponent<T>()
         {
             return (T)Convert.ChangeType(Children.Find(x => x.GetType() == typeof(T)), typeof(T));
+        }
+        public T GetComponent<T>(int index)
+        {
+            return (T)Convert.ChangeType(Children.Where(x => x.GetType() == typeof(T)).ToList()[index], typeof(T));
         }
         public void RegisterObject()
         {

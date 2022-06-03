@@ -14,7 +14,6 @@ namespace EvDevEngine
     class DemoGame : EvDevEngine.EvDevEngine
     {
         public Player player;
-        public Texture2D PlayerTexture;
 
         readonly string[,] Map =
         {
@@ -40,13 +39,13 @@ namespace EvDevEngine
 
                     if (Map[j, i] == "g")
                     {
-                        new Sprite2D(new EvDevEngine.Vector2(i * 50 + 50, j * 50), new EvDevEngine.Vector2(50, 50), groundRef, "ground");
+                        new Object2D("ground", new Sprite2D(new EvDevEngine.Vector2(i * 50 + 50, j * 50), new EvDevEngine.Vector2(50, 50), groundRef, "ground"));
                     }
                 }
             }
             
-            Sprite2D PlayerSprite = new Sprite2D(Window, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(70, 70), "player", "Player");
-            player = new Player("MainPlayer", PlayerSprite);
+            Sprite2D PlayerSprite = new Sprite2D(Window, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(24, 66), "player", "Player");
+            player = new Player("MainPlayer", PlayerSprite, Window);
             
            
 
@@ -66,7 +65,7 @@ namespace EvDevEngine
 
         public override void Update(GameTime gameTime)
         {
-
+            //Log.Info(Window.Updates);
         }
 
         public override void Unload()

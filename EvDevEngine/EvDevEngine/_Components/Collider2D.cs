@@ -12,18 +12,16 @@ namespace EvDevEngine.EvDevEngine._Components
         public List<string> ColliderChecks = new List<string>();
         public Vector2 LastPosition = Vector2.Zero();
         
-        public Collider2D(List<string> ObjectsToCollideWith, Object2D Parent)
+        public Collider2D(List<string> ObjectsToCollideWith)
         {
-            this.Parent = Parent;
             Name = "Collider2D";
             foreach(string s in ObjectsToCollideWith)
             {
                 ColliderChecks.Add(s);
             }
         }
-        public Collider2D(string ObjectToCollideWith, Object2D Parent)
+        public Collider2D(string ObjectToCollideWith)
         {
-            this.Parent = Parent;
             Name = "Collider2D";
             ColliderChecks.Add(ObjectToCollideWith);
         }

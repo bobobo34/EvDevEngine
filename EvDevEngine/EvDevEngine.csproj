@@ -89,7 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoGame.cs" />
+    <Compile Include="EvDevEngine\Animation2D.cs" />
     <Compile Include="EvDevEngine\Component.cs" />
+    <Compile Include="EvDevEngine\XNAfuncs.cs" />
     <Compile Include="EvDevEngine\_Components\Collider2D.cs" />
     <Compile Include="EvDevEngine\EvDevEngine.cs" />
     <Compile Include="EvDevEngine\Log.cs" />
