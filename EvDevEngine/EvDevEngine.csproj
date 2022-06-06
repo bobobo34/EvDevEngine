@@ -91,6 +91,7 @@
     <Compile Include="DemoGame.cs" />
     <Compile Include="EvDevEngine\Animation2D.cs" />
     <Compile Include="EvDevEngine\Component.cs" />
+    <Compile Include="EvDevEngine\State.cs" />
     <Compile Include="EvDevEngine\XNAfuncs.cs" />
     <Compile Include="EvDevEngine\_Components\Collider2D.cs" />
     <Compile Include="EvDevEngine\EvDevEngine.cs" />
@@ -99,7 +100,9 @@
     <Compile Include="EvDevEngine\Shape2D.cs" />
     <Compile Include="EvDevEngine\Sprite2D.cs" />
     <Compile Include="EvDevEngine\Vector2.cs" />
+    <Compile Include="EvDevEngine\_Components\Movement.cs" />
     <Compile Include="EvDevEngine\_Components\WASDMovement.cs" />
+    <Compile Include="KillerWhale.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

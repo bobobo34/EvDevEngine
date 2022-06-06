@@ -33,8 +33,8 @@ namespace EvDevEngine.EvDevEngine
             this.graphics = new GraphicsDeviceManager(this);
 
             if (GraphicsDevice == null) graphics.ApplyChanges();
-            graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width / 2;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height / 2;
             graphics.ApplyChanges();
             
             this.Content.RootDirectory = "Content";
@@ -72,38 +72,19 @@ namespace EvDevEngine.EvDevEngine
             this.sprites.Begin();
             foreach(Object2D @object in EvDevEngine.AllObjects)
             {
-                Animation2D animation = @object.GetComponent<Animation2D>();
-                if (animation != null)
-                {
-                    if (animation.condition() && !animation.Animating)
-                    {
-                        animation.BeginAnimation(Updates);
-                    }
-                    if (animation.Animating)
-                    {
-                        animation.StepAnimation(sprites, Updates);
-                    }
-                    else
-                    {
-
-                        this.sprites.Draw(layerDepth: 0f, rotation: 0f, origin: XNAfuncs.Vec2(Vector2.Zero()), texture: @object.Sprite.Sprite, destinationRectangle: @object.Sprite.rectangle, sourceRectangle: null, color: Microsoft.Xna.Framework.Color.White, effects: @object.Sprite.Flipped);
-                    }
-                }
-                else
-                {
-                    this.sprites.Draw(@object.Sprite.Sprite, @object.Sprite.rectangle, Microsoft.Xna.Framework.Color.White);
-                }
+                
             }
             DrawFunc?.Invoke(gameTime);
             this.sprites.End();
             base.Draw(gameTime);
         }
+       
     }
     public abstract class EvDevEngine
     {
         private Vector2 ScreenSize = new Vector2(512, 512);
         private string Title;
-        public Canvas Window = null;
+        public static Canvas Window = null;
         public Thread GameLoopThread = null;
         public static KeyboardState Input;
         public bool UpdateObjectsBefore = true;

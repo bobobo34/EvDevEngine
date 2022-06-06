@@ -91,7 +91,7 @@ namespace EvDevEngine.EvDevEngine
         public void BeginAnimation(int Updates)
         {
             this.ScaleMultiplier = (float)Parent.Sprite.Scale.X / Parent.Sprite.Sprite.Width;
-            
+
             PreviousScale = new Vector2(Parent.Sprite.Scale);
             Parent.Sprite.Scale = new Vector2((float)width * ScaleMultiplier, (float)height * ScaleMultiplier);
          

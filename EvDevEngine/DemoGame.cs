@@ -44,7 +44,7 @@ namespace EvDevEngine
                 }
             }
             
-            Sprite2D PlayerSprite = new Sprite2D(Window, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(24, 66), "player", "Player");
+            Sprite2D PlayerSprite = new Sprite2D(Window, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(42, 66), "player", "Player");
             player = new Player("MainPlayer", PlayerSprite, Window);
             
            
