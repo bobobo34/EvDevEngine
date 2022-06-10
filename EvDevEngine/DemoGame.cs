@@ -5,72 +5,71 @@ using System.Text;
 using System.Threading.Tasks;
 using EvDevEngine.EvDevEngine;
 using System.Drawing;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace EvDevEngine
 {
-    class DemoGame : EvDevEngine.EvDevEngine
+    class KillerWhaleMania : EvDevEngine.EvDevEngine
     {
-        public Player player;
 
-        readonly string[,] Map =
-        {
-            { ".",".",".",".",".",".","." },
-            { ".",".",".",".",".",".","." },
-            { ".",".",".",".",".",".","." },
-            { ".",".",".",".",".",".","." },
-            { "g","g","g","g","g","g","g" },
-            { ".",".",".",".",".",".","." }
-        };
-        public DemoGame() : base(new EvDevEngine.Vector2(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height), "Killer Whale Mania!") { }
+        bool f11down = false;
 
-        public override void Load()
+
+        public KillerWhaleMania() : base("Killer Whale Mania!") { }
+
+
+        public override void OnInit()
         {
-            BackgroundColor = Microsoft.Xna.Framework.Color.Black;
             
-            Sprite2D groundRef = new Sprite2D(Window, "player");
+        }
 
-            for (int i = 0; i < Map.GetLength(1); i++)
+        public override void AddStates()
+        {
+
+            AddState(new TitleState(this));
+
+            base.AddStates();
+        }
+        public override void OnUpdate(GameTime gameTime)
+        {
+            if (!KeyboardInput.IsKeyDown(Keys.F11)) f11down = false;
+            if (KeyboardInput.IsKeyDown(Keys.F11) && !f11down)
             {
-                for (int j = 0; j < Map.GetLength(0); j++)
+                f11down = true;
+                //Log.Info(GlobalScale);
+                if (!graphics.IsFullScreen)
                 {
-
-                    if (Map[j, i] == "g")
-                    {
-                        new Object2D("ground", new Sprite2D(new EvDevEngine.Vector2(i * 50 + 50, j * 50), new EvDevEngine.Vector2(50, 50), groundRef, "ground"));
-                    }
+                    //GlobalScale = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 960;
+                    EvDevEngine.Vector2 oldsize = new EvDevEngine.Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+                    graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                    graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                    graphics.IsFullScreen = true;
+                    //Window.IsBorderless = true;
+                    EvDevEngine.Vector2 newsize = new EvDevEngine.Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+                    CurrentState.ResizeAll(oldsize, newsize);
+                    graphics.ApplyChanges();
+                }
+                else if(graphics.IsFullScreen)
+                {
+                    //GlobalScale = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 960 / 2;
+                    EvDevEngine.Vector2 oldsize = new EvDevEngine.Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+                    graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
+                    graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2;
+                    graphics.IsFullScreen = false;
+                    //Window.IsBorderless = false;
+                    EvDevEngine.Vector2 newsize = new EvDevEngine.Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+                    CurrentState.ResizeAll(oldsize, newsize);
+                    graphics.ApplyChanges();
                 }
             }
-            
-            Sprite2D PlayerSprite = new Sprite2D(Window, new EvDevEngine.Vector2(0, 10), new EvDevEngine.Vector2(42, 66), "player", "Player");
-            player = new Player("MainPlayer", PlayerSprite, Window);
-            
-           
-
+            base.OnUpdate(gameTime);
         }
-
-
-        public override void Initialize()
-        {
-            
-        }
-        public override void Draw(GameTime gameTime)
-        {
-            
-            
-            
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            //Log.Info(Window.Updates);
-        }
-
         public override void Unload()
         {
             
         }
+        
     }
 }

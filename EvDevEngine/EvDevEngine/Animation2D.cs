@@ -36,23 +36,11 @@ namespace EvDevEngine.EvDevEngine
             width = individualWidth;
             height = individualHeight;
             Textures = XNAfuncs.SpliceSpriteSheet(spritesheet, individualWidth, individualHeight);
-            Log.Info(Textures.Count);
             this.Spritesheet = spritesheet;
             FrameTimer = frameTimer;
             this.condition = condition;
         }
-        //public Animation2D(Texture2D spritesheet, int individualWidth, int individualHeight, int frameTimer, Func<bool> condition, float ScaleMultiplier, bool constant = false)
-        //{
-        //    this.constant = constant;
-        //    width = individualWidth;
-        //    height = individualHeight;
-        //    this.ScaleMultiplier = ScaleMultiplier;
-        //    Textures = XNAfuncs.SpliceSpriteSheet(spritesheet, individualWidth, individualHeight);
-        //    Log.Info(Textures.Count);
-        //    this.Spritesheet = spritesheet;
-        //    FrameTimer = frameTimer;
-        //    this.condition = condition;
-        //}
+
         int index = 0;
         
         public void Next()
@@ -84,7 +72,6 @@ namespace EvDevEngine.EvDevEngine
         }
         public void EndAnimation()
         {
-            Log.Info("ending animation");
             Animating = false;
             Parent.Sprite.Scale = new Vector2(PreviousScale);
         }

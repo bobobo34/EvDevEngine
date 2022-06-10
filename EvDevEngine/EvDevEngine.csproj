@@ -15,6 +15,21 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -91,7 +106,13 @@
     <Compile Include="DemoGame.cs" />
     <Compile Include="EvDevEngine\Animation2D.cs" />
     <Compile Include="EvDevEngine\Component.cs" />
+    <Compile Include="EvDevEngine\Fonts.cs" />
+    <Compile Include="EvDevEngine\LoadingState.cs" />
     <Compile Include="EvDevEngine\State.cs" />
+    <Compile Include="EvDevEngine\UIElements\IAnimatedUIButton.cs" />
+    <Compile Include="TestButton.cs" />
+    <Compile Include="EvDevEngine\UIElements\IUIButton.cs" />
+    <Compile Include="EvDevEngine\UIElements\IUIElement.cs" />
     <Compile Include="EvDevEngine\XNAfuncs.cs" />
     <Compile Include="EvDevEngine\_Components\Collider2D.cs" />
     <Compile Include="EvDevEngine\EvDevEngine.cs" />
@@ -102,10 +123,13 @@
     <Compile Include="EvDevEngine\Vector2.cs" />
     <Compile Include="EvDevEngine\_Components\Movement.cs" />
     <Compile Include="EvDevEngine\_Components\WASDMovement.cs" />
+    <Compile Include="TitleKillerWhale.cs" />
+    <Compile Include="TitleState.cs" />
     <Compile Include="KillerWhale.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StartState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -128,6 +152,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EvDevEngine\Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

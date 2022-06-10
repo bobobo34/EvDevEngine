@@ -10,7 +10,7 @@ namespace EvDevEngine
     {
         static void Main(string[] args)
         {
-            DemoGame game = new DemoGame();
+            KillerWhaleMania game = new KillerWhaleMania();
         }
     }
 }

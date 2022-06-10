@@ -26,11 +26,12 @@ namespace EvDevEngine.EvDevEngine
         public Texture2D Sprite = null;
         public bool IsReference = false;
         public SpriteEffects Flipped = SpriteEffects.None;
+        public float ScreenScale = 1f;
         public Rectangle rectangle
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, (int)Scale.X, (int)Scale.Y);
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)(Scale.X * ScreenScale), (int)(Scale.Y * ScreenScale));
             }
         }
 
@@ -47,7 +48,7 @@ namespace EvDevEngine.EvDevEngine
             get
             {
                 if(IsReference) { return null; }
-                return new Vector2(Position.X + Scale.X, Position.Y + Scale.Y);
+                return new Vector2(Position.X + (Scale.X * ScreenScale), Position.Y + (Scale.Y * ScreenScale));
             }
         }
         
@@ -60,8 +61,6 @@ namespace EvDevEngine.EvDevEngine
 
             Sprite = game.Content.Load<Texture2D>(Directory);
 
-
-            Log.Info($"[SHAPE2D]({Tag}) - Has been registered!");
             EvDevEngine.RegisterSprite(this);
         }
         public Sprite2D(Game game, string Directory)
@@ -80,13 +79,19 @@ namespace EvDevEngine.EvDevEngine
 
             Sprite = reference.Sprite;
 
-            Log.Info($"[SHAPE2D]({Tag}) - Has been registered!");
+
             EvDevEngine.RegisterSprite(this);
         }
 
+        public void ChangeSize(Vector2 OldScreenSize, Vector2 NewScreenSize)
+        {
+            Position.X = NewScreenSize.X * (Position.X / OldScreenSize.X);
+            Position.Y = NewScreenSize.Y * (Position.Y / OldScreenSize.Y);
+            ScreenScale *= NewScreenSize.X / OldScreenSize.X;
+        }
         public void DestroySelf()
         {
-            Log.Info($"[SHAPE2D]({Tag}) - Has been destroyed!");
+
             EvDevEngine.UnregisterSprite(this);
         }
     }

@@ -18,11 +18,11 @@ namespace EvDevEngine
 
         public KillerWhale(string ID, Sprite2D sprite, Game game) : base(ID, sprite)
         {
-            //Animation2D swim = new Animation2D(game.Content.Load<Texture2D>("KillerWhaleSwim"), 65, 30 10, , true);
+            Animation2D swim = new Animation2D(game.Content.Load<Texture2D>("KillerWhaleSwim"), 65, 30, 10, IsSwimming, true);
         }
-        //public bool IsSwimming()
-        //{
-        //    return true
-        //}
+        public bool IsSwimming()
+        {
+            return true;
+        }
     }
 }

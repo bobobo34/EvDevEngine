@@ -20,23 +20,23 @@ namespace EvDevEngine.EvDevEngine._Components
 
         public override void OnUpdate(GameTime gameTime)
         {
-            if(!EvDevEngine.Input.IsKeyDown(Keys.A) && !EvDevEngine.Input.IsKeyDown(Keys.A) && !EvDevEngine.Input.IsKeyDown(Keys.A) && !EvDevEngine.Input.IsKeyDown(Keys.A))
+            if(!EvDevEngine.KeyboardInput.IsKeyDown(Keys.A) && !EvDevEngine.KeyboardInput.IsKeyDown(Keys.A) && !EvDevEngine.KeyboardInput.IsKeyDown(Keys.A) && !EvDevEngine.KeyboardInput.IsKeyDown(Keys.A))
             {
                 EndMove();
             }
-            if (EvDevEngine.Input.IsKeyDown(Keys.W))
+            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.W))
             {
                 BeginMove(Direction.Up, gameTime);
             }
-            if (EvDevEngine.Input.IsKeyDown(Keys.D)) 
+            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.D)) 
             {
                 BeginMove(Direction.Right, gameTime);
             }
-            if (EvDevEngine.Input.IsKeyDown(Keys.S)) 
+            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.S)) 
             {
                 BeginMove(Direction.Down, gameTime);
             }
-            if (EvDevEngine.Input.IsKeyDown(Keys.A)) 
+            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.A)) 
             {
                 BeginMove(Direction.Left, gameTime);
             }
