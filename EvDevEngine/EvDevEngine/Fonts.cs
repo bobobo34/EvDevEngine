@@ -31,10 +31,7 @@ namespace EvDevEngine.EvDevEngine
         public Vector2 Position;
         public SpriteFont font;
         public Color SpriteColor = Color.Black;
-        private float GetRotation(float degrees)
-        {
-            return (((float)Math.PI / 360) * degrees);
-        }
+        
         public FontText(SpriteFont font, string Text, Vector2 position, EvDevEngine game)
         {
             this.font = font;
@@ -43,7 +40,14 @@ namespace EvDevEngine.EvDevEngine
             this.Text = Text;
             this.game = game;
         }
-        public void DrawSelf()
+        public FontText(SpriteFont font, string Text, EvDevEngine game)
+        {
+            this.font = font;
+            this.Size = Vec2(font.MeasureString(Text));
+            this.Text = Text;
+            this.game = game;
+        }
+        public virtual void DrawSelf()
         {
             game.sprites.DrawString(font, Text, Vec2(Position), SpriteColor, GetRotation(Rotation), Vec2(Origin), Scale * ScreenScale, SpriteEffects.None, 1);
         }
@@ -57,4 +61,47 @@ namespace EvDevEngine.EvDevEngine
         }
 
     }
+    public class BouncingFont : FontText
+    {
+        public float ScaleFactor;
+        public float RotationFactor;
+        public float ScaleDiff;
+        public float RotationDiff;
+        private float OriginalScale;
+        private float OriginalRotation;
+        public BouncingFont(SpriteFont font, string Text, Vector2 position, EvDevEngine game, float ScaleFactor, float ScaleDiff, float RotationFactor, float RotationDifference) : base(font, Text, position, game)
+        {
+            OriginalScale = Scale;
+            OriginalRotation = Rotation;
+            this.ScaleFactor = ScaleFactor;
+            this.ScaleDiff = ScaleDiff;
+            this.RotationFactor = RotationFactor;
+            this.RotationDiff = RotationDifference;
+        }
+        public BouncingFont(SpriteFont font, string Text, EvDevEngine game, float ScaleFactor, float ScaleDiff, float RotationFactor, float RotationDifference) : base(font, Text, game)
+        {
+            OriginalScale = Scale;
+            OriginalRotation = Rotation;
+            this.ScaleFactor = ScaleFactor;
+            this.ScaleDiff = ScaleDiff;
+            this.RotationFactor = RotationFactor;
+            this.RotationDiff = RotationDifference;
+        }
+        public override void DrawSelf()
+        {
+            if (Scale >= OriginalScale + ScaleDiff || Scale <= OriginalScale - ScaleDiff) ScaleFactor = -ScaleFactor;
+            if (Rotation >= OriginalRotation + RotationDiff || Rotation <= OriginalRotation - RotationDiff) RotationFactor = -RotationFactor;
+
+            Rotation += RotationFactor;
+            Scale += ScaleFactor;
+            base.DrawSelf();
+        }
+    }
 }
+//if ((float)Math.Round(TitleText.Scale, 2) == 1.55f) FontScaleFactor = -0.001f;
+//else if ((float)Math.Round(TitleText.Scale, 2) == 1.45f) FontScaleFactor = 0.001f;
+//if (Math.Round(TitleText.Rotation) == 8f) FontRotationFactor = -0.1f;
+//else if (Math.Round(TitleText.Rotation) == -8f) FontRotationFactor = 0.1f;
+
+//TitleText.Rotation += FontRotationFactor;
+//TitleText.Scale += FontScaleFactor;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Point = Microsoft.Xna.Framework.Point;
 namespace EvDevEngine.EvDevEngine
 {
     public class Vector2
@@ -19,7 +19,11 @@ namespace EvDevEngine.EvDevEngine
         public static Vector2 operator /(Vector2 a, float b) => new Vector2(a.X / b, a.Y / b);
         public static Vector2 operator *(Vector2 a, float b) => new Vector2(a.X * b, a.Y * b);
 
-
+        public Vector2(Point p)
+        {
+            X = p.X;
+            Y = p.Y;
+        }
         public Vector2()
         {
             X = Zero().X;

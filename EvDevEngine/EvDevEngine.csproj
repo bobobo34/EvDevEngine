@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundOcean.cs" />
     <Compile Include="DemoGame.cs" />
     <Compile Include="EvDevEngine\Animation2D.cs" />
     <Compile Include="EvDevEngine\Component.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="EvDevEngine\LoadingState.cs" />
     <Compile Include="EvDevEngine\State.cs" />
     <Compile Include="EvDevEngine\UIElements\IAnimatedUIButton.cs" />
-    <Compile Include="TestButton.cs" />
+    <Compile Include="EvDevEngine\NormalButton.cs" />
     <Compile Include="EvDevEngine\UIElements\IUIButton.cs" />
     <Compile Include="EvDevEngine\UIElements\IUIElement.cs" />
     <Compile Include="EvDevEngine\XNAfuncs.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="EvDevEngine\Vector2.cs" />
     <Compile Include="EvDevEngine\_Components\Movement.cs" />
     <Compile Include="EvDevEngine\_Components\WASDMovement.cs" />
+    <Compile Include="Sun.cs" />
     <Compile Include="TitleKillerWhale.cs" />
     <Compile Include="TitleState.cs" />
     <Compile Include="KillerWhale.cs" />

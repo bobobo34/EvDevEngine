@@ -36,7 +36,7 @@ namespace EvDevEngine.EvDevEngine
 
         public State CurrentState;
         public bool DoneLoading = false;
-
+        private RenderTarget2D target;
         public EvDevEngine(string Title) : base()
         {
             Log.Info("Game is starting...");
@@ -68,6 +68,7 @@ namespace EvDevEngine.EvDevEngine
         
         protected override void Initialize()
         {
+            target = new RenderTarget2D(GraphicsDevice, 1920, 1080);
             OnInit();
             base.Initialize();
         }
@@ -92,11 +93,10 @@ namespace EvDevEngine.EvDevEngine
         }
         protected override void Draw(GameTime gameTime)
         {
-
-            RenderTarget2D target = new RenderTarget2D(GraphicsDevice, 1920, 1080);
+          
             GraphicsDevice.SetRenderTarget(target);
             this.GraphicsDevice.Clear(BackgroundColor);
-            this.sprites.Begin(SpriteSortMode.Immediate, null, SamplerState.PointClamp, null, null, null, null);
+            this.sprites.Begin(SpriteSortMode.FrontToBack, null, SamplerState.PointClamp, null, null, null, null);
             OnDraw(gameTime);
             this.sprites.End();
             base.Draw(gameTime);
@@ -166,7 +166,9 @@ namespace EvDevEngine.EvDevEngine
 
         public virtual void OnDraw(GameTime gameTime)
         {
-            CurrentState.Draw(gameTime);
+
+           CurrentState.Draw(gameTime);
+
         }
 
         public virtual void AddStates()

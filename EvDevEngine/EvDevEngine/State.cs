@@ -59,19 +59,16 @@ namespace EvDevEngine.EvDevEngine
                     }
                     if (animation.Animating)
                     {
-                        animation.StepAnimation(game.sprites, EvDevEngine.Updates);
+                        animation.StepAnimation(EvDevEngine.Updates);
                     }
                     else
                     {
-                        game.sprites.Draw(layerDepth: 0f, rotation: 0f, origin: XNAfuncs.Vec2(Vector2.Zero()), texture: @object.Sprite.Sprite, destinationRectangle: @object.Sprite.rectangle, sourceRectangle: null, color: Microsoft.Xna.Framework.Color.White, effects: @object.Sprite.Flipped);
+                        @object.Sprite.DrawSelf();
                     }
                 }
                 else
                 {
-                    Log.Info(@object.Sprite.rectangle.Center.X);
-                    Log.Info(@object.Sprite.rectangle.IsEmpty);
-                    Log.Info(@object.Sprite.Sprite.)
-                    game.sprites.Draw(@object.Sprite.Sprite, @object.Sprite.rectangle, Microsoft.Xna.Framework.Color.White);
+                    @object.Sprite.DrawSelf();
                 }
             }
         }
@@ -89,6 +86,16 @@ namespace EvDevEngine.EvDevEngine
                 }
             }
         }
-        public virtual void ResizeAll(Vector2 oldScreenSize, Vector2 newScreenSize) { }
+        public virtual void ResizeAll(Vector2 oldScreenSize, Vector2 newScreenSize)
+        {
+            foreach (Object2D obj in AllObjects)
+            {
+                obj.Sprite.ChangeSize(oldScreenSize, newScreenSize);
+            }
+            foreach (IUIElement element in uIElements)
+            {
+                element.ChangeSize(oldScreenSize, newScreenSize);
+            }
+        }
     }
 }

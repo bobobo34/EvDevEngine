@@ -17,5 +17,6 @@ namespace EvDevEngine.EvDevEngine.UIElements
         Vector2 Position { get; set; }
         void Draw(GameTime gameTime);
         void Update(GameTime gameTime);
+        void ChangeSize(Vector2 oldScreenSize, Vector2 newScreenSize);
     }
 }

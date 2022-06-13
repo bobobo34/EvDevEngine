@@ -10,9 +10,8 @@ namespace EvDevEngine.EvDevEngine.UIElements
 {
     public interface IUIButton : IUIElement
     {
-        string Text { get; set; }
         Vector2 Scale { get; set; }
-        SpriteFont Font { get; set; }
+        FontText Font { get; set; }
         void OnClick();
     }
 }

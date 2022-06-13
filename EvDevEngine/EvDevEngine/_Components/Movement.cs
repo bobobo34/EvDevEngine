@@ -15,7 +15,7 @@ namespace EvDevEngine.EvDevEngine._Components
         public float MovementSpeed = 6.5f;
         public float TrueMovementSpeed(GameTime gameTime)
         {
-            return (float)Math.Pow(MovementSpeed, 3) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            return MovementSpeed * 45 * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         
         public void BeginMove(Direction direction, GameTime gameTime)

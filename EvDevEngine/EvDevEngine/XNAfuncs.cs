@@ -84,7 +84,10 @@ namespace EvDevEngine.EvDevEngine
             float Y = (buttonrec.Height - stringsize.Y * scale) / 2 + buttonrec.Y;
             return new Vector2(X, Y);
         }
-        
+        public static float GetRotation(float degrees)
+        {
+            return (((float)Math.PI / 360) * degrees);
+        }
         //change based on game
         public static SpriteFont GetFont(this EvDevEngine game, Fonts font)
         {
