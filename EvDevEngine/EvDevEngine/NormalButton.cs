@@ -22,6 +22,7 @@ namespace EvDevEngine.EvDevEngine
         public bool MouseDown = false;
         public bool Centered = false;
         public float ScreenScale = 1f;
+        public Action OnClick { get; set; }
         public Color Tint
         {
             get
@@ -87,10 +88,6 @@ namespace EvDevEngine.EvDevEngine
             Position.X = NewScreenSize.X * (Position.X / OldScreenSize.X);
             Position.Y = NewScreenSize.Y * (Position.Y / OldScreenSize.Y);
             ScreenScale *= NewScreenSize.X / OldScreenSize.X;
-        }
-        public void OnClick()
-        {
-            Log.Info("Clicked!");
         }
     }
 }

@@ -12,6 +12,6 @@ namespace EvDevEngine.EvDevEngine.UIElements
     {
         Vector2 Scale { get; set; }
         FontText Font { get; set; }
-        void OnClick();
+        Action OnClick { get; set; }
     }
 }

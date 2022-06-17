@@ -8,6 +8,8 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -19,6 +21,21 @@ namespace EvDevEngine.EvDevEngine
         public static MouseState MouseInput;
         public bool UpdateObjectsBefore = true;
 
+        public int Height
+        {
+            get
+            {
+                return graphics.PreferredBackBufferHeight;
+            }
+        }
+        public int Width
+        {
+            get
+            {
+                return graphics.PreferredBackBufferWidth;
+            }
+        }
+
         public static List<Shape2D> AllShapes = new List<Shape2D>();
         public static List<Sprite2D> AllSprites = new List<Sprite2D>();
         public static List<Object2D> AllObjects = new List<Object2D>();
@@ -26,17 +43,21 @@ namespace EvDevEngine.EvDevEngine
         
         public Microsoft.Xna.Framework.Color BackgroundColor = Microsoft.Xna.Framework.Color.White;
 
-        public Vector2 CameraPosition = Vector2.Zero();
-        public float CameraAngle = 0f;
-        public Vector2 CameraZoom = new Vector2(1, 1);
-
         public GraphicsDeviceManager graphics = null;
         public SpriteBatch sprites;
         public static int Updates = 0;
 
+        public static OrthographicCamera Camera;
+        public static Microsoft.Xna.Framework.Vector2 MousePos
+        {
+            get
+            {
+                return Camera.ScreenToWorld(XNAfuncs.Vec2(new Vector2(MouseInput.X, MouseInput.Y)));
+            }
+        }
+
         public State CurrentState;
         public bool DoneLoading = false;
-        private RenderTarget2D target;
         public EvDevEngine(string Title) : base()
         {
             Log.Info("Game is starting...");
@@ -45,8 +66,8 @@ namespace EvDevEngine.EvDevEngine
 
             if (GraphicsDevice == null) graphics.ApplyChanges();
             
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2;
+            graphics.PreferredBackBufferWidth = 960;
+            graphics.PreferredBackBufferHeight = 540;
             graphics.ApplyChanges();
 
     
@@ -68,7 +89,8 @@ namespace EvDevEngine.EvDevEngine
         
         protected override void Initialize()
         {
-            target = new RenderTarget2D(GraphicsDevice, 1920, 1080);
+            var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2);
+            Camera = new OrthographicCamera(viewportAdapter);
             OnInit();
             base.Initialize();
         }
@@ -93,17 +115,12 @@ namespace EvDevEngine.EvDevEngine
         }
         protected override void Draw(GameTime gameTime)
         {
-          
-            GraphicsDevice.SetRenderTarget(target);
+            var matrix = Camera.GetViewMatrix();
             this.GraphicsDevice.Clear(BackgroundColor);
-            this.sprites.Begin(SpriteSortMode.FrontToBack, null, SamplerState.PointClamp, null, null, null, null);
+            this.sprites.Begin(sortMode: SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp, transformMatrix: matrix);
             OnDraw(gameTime);
             this.sprites.End();
             base.Draw(gameTime);
-            GraphicsDevice.SetRenderTarget(null);
-            this.sprites.Begin();
-            this.sprites.Draw(target, new Rectangle(0, 0, GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height), Color.White);
-            this.sprites.End();
         }
 
         public static void RegisterShape(Shape2D shape)

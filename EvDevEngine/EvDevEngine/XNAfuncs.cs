@@ -11,6 +11,10 @@ namespace EvDevEngine.EvDevEngine
 {
     public static class XNAfuncs
     {
+        public static float Lerp(float min, float max, float by)
+        {
+            return min + (max - min) * by;
+        }
         public static Rectangle ScreenRectangle(this EvDevEngine game)
         {
             return new Rectangle(0, 0, game.graphics.PreferredBackBufferWidth, game.graphics.PreferredBackBufferHeight);
@@ -26,7 +30,7 @@ namespace EvDevEngine.EvDevEngine
             {
                 ButtonDown = false;
             }
-            if (but == ButtonState.Pressed && rectangle.Contains(EvDevEngine.MouseInput.X, EvDevEngine.MouseInput.Y) && !ButtonDown)
+            if (but == ButtonState.Pressed && rectangle.Contains(EvDevEngine.MousePos.X, EvDevEngine.MousePos.Y) && !ButtonDown)
             {
                 ButtonDown = true;
                 return true;
