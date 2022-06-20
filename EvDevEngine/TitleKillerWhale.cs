@@ -15,7 +15,7 @@ namespace EvDevEngine
     {
         public TitleKillerWhale(string ID, Sprite2D sprite, EvDevEngine.EvDevEngine game) : base(ID, sprite)
         {
-            TKWMove movement = new TKWMove(new Vector2(sprite.Position), game);
+            TKWMove movement = new TKWMove(game);
 
             AddComponent(movement);
             Animation2D swim = new Animation2D(game.Content.Load<Texture2D>("KillerWhaleSwim"), 65, 30, 20, IsSwimming, true);
@@ -26,12 +26,12 @@ namespace EvDevEngine
             return GetComponent<TKWMove>().Moving;
         }
     }
-    internal class TKWMove : Movement
+    public class TKWMove : Movement
     {
         public float frequency = 2f;
         public float magnitude = 0.5f;
         EvDevEngine.EvDevEngine game;
-        public TKWMove(Vector2 original, EvDevEngine.EvDevEngine game)
+        public TKWMove(EvDevEngine.EvDevEngine game)
         {
             Name = "TKWMovement";
             MovementSpeed = 3f;

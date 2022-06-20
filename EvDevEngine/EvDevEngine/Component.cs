@@ -17,7 +17,10 @@ namespace EvDevEngine.EvDevEngine
         public virtual void OnDraw(GameTime gameTime) { }
 
         public virtual void OnUpdate(GameTime gameTime) { }
-        public virtual void Destroy() { }
+        public virtual void Destroy() 
+        {
+            Parent.Children.Remove(this);
+        }
 
     }
 }

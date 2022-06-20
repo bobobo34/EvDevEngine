@@ -24,6 +24,7 @@ namespace EvDevEngine.EvDevEngine
         public void AddObject(Object2D @object)
         {
             AllObjects.Add(@object);
+            @object.game = game;
         }
         public void RemoveObject(int index)
         {
@@ -74,13 +75,13 @@ namespace EvDevEngine.EvDevEngine
         }
         public virtual void Update(GameTime gameTime)
         {
-            foreach(IUIElement element in uIElements)
+            foreach(IUIElement element in uIElements.ToList())
             {
                 element.Update(gameTime);
             }
-            foreach(Object2D @object in AllObjects)
+            foreach(Object2D @object in AllObjects.ToList())
             {
-                foreach(Component component in @object.Children)
+                foreach(Component component in @object.Children.ToList())
                 {
                     component.OnUpdate(gameTime);
                 }

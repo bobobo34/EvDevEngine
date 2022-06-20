@@ -29,7 +29,7 @@ namespace EvDevEngine
         {
 
             AddState(new TitleState(this));
-
+            AddState(new GameState(this));
             base.AddStates();
         }
 

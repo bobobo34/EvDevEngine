@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundOcean.cs" />
+    <Compile Include="KillerWhaleManager.cs" />
     <Compile Include="KillerWhaleMania.cs" />
     <Compile Include="EvDevEngine\Animation2D.cs" />
     <Compile Include="EvDevEngine\Component.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="EvDevEngine\_Components\WASDMovement.cs" />
     <Compile Include="Sun.cs" />
     <Compile Include="TitleKillerWhale.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="TitleState.cs" />
     <Compile Include="KillerWhale.cs" />
     <Compile Include="Player.cs" />

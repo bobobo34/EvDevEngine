@@ -11,6 +11,7 @@ namespace EvDevEngine.EvDevEngine
         public string ID;
         public Sprite2D Sprite = null;
         public List<Component> Children = new List<Component>();
+        public EvDevEngine game;
 
         public Object2D(string ID, Sprite2D sprite)
         {
@@ -18,7 +19,12 @@ namespace EvDevEngine.EvDevEngine
             this.Sprite = sprite;
             RegisterObject();
         }
-
+        public Object2D(string ID)
+        {
+            this.ID = ID;
+            this.Sprite = null;
+            RegisterObject();
+        }
         public void AddComponent(Component Component)
         {
             Component.Parent = this;
@@ -46,7 +52,13 @@ namespace EvDevEngine.EvDevEngine
         }
         public void UnRegisterObject()
         {
+            foreach(var obj in Children.ToList())
+            {
+                obj.Destroy();
+            }
+            game.CurrentState.RemoveObject(this);
             EvDevEngine.AllObjects.Remove(this);
+            EvDevEngine.UnregisterSprite(Sprite);
         }
     }
 }

@@ -68,7 +68,7 @@ namespace EvDevEngine
         {
             ///TODO: Add random kw jumps
             ///
-            if (EvDevEngine.EvDevEngine.Camera.Position.Y >= 540) { MovingDown = false; EvDevEngine.EvDevEngine.Camera.Position = new Microsoft.Xna.Framework.Vector2(EvDevEngine.EvDevEngine.Camera.Position.X, 540); }
+            if (EvDevEngine.EvDevEngine.Camera.Position.Y >= 540) { game.SetState<GameState>(); EvDevEngine.EvDevEngine.Camera.Position = new Microsoft.Xna.Framework.Vector2(EvDevEngine.EvDevEngine.Camera.Position.X, 0); }
             if (MovingDown)
             {
                 float i = (-0.01f * (Math.Abs(EvDevEngine.EvDevEngine.Camera.Position.Y - 270)) / 270 + 0.02f) * 1.25f;

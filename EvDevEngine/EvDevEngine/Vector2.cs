@@ -18,7 +18,14 @@ namespace EvDevEngine.EvDevEngine
         public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.X - b.X, a.Y - b.Y);
         public static Vector2 operator /(Vector2 a, float b) => new Vector2(a.X / b, a.Y / b);
         public static Vector2 operator *(Vector2 a, float b) => new Vector2(a.X * b, a.Y * b);
+        public override bool Equals(object obj) => this.Equals(obj as Vector2);
 
+        public bool Equals(Vector2 other) => other.X == X && other.Y == Y;
+
+        public Vector2 Rounded()
+        {
+            return new Vector2((int)X, (int)Y);
+        }
         public Vector2(Point p)
         {
             X = p.X;

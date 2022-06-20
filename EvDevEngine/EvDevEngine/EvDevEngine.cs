@@ -13,6 +13,7 @@ using MonoGame.Extended.ViewportAdapters;
 
 namespace EvDevEngine.EvDevEngine
 {
+
     public abstract class EvDevEngine : Game
     {
         private string Title;
@@ -82,6 +83,15 @@ namespace EvDevEngine.EvDevEngine
         }
         public void SetState(int index)
         {
+            foreach (var obj in AllObjects.ToList()) AllObjects.Remove(obj);
+            Log.Info($"changing state to {States[index]}");
+            this.CurrentState = States[index];
+            CurrentState.Load();
+        }
+        public void SetState<T>()
+        {
+            foreach (var obj in AllObjects.ToList()) AllObjects.Remove(obj);
+            int index = States.FindIndex(s => s.GetType() == typeof(T));
             Log.Info($"changing state to {States[index]}");
             this.CurrentState = States[index];
             CurrentState.Load();

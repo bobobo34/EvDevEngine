@@ -17,6 +17,7 @@ namespace EvDevEngine.EvDevEngine
         public bool Animating = false;
         public int BeginAnimFrame;
         Vector2 PreviousScale;
+        float floatPreviousScale = 1f;
         private int width;
         private int height;
         private float ScaleMultiplier = 1f;
@@ -24,7 +25,6 @@ namespace EvDevEngine.EvDevEngine
         Texture2D previousTexture;
         Rectangle? previousRectangle;
         float Scale = 1f;
-        Vector2 oldScale;
         public int TextureNum
         {
             get
@@ -76,7 +76,6 @@ namespace EvDevEngine.EvDevEngine
             }
             CurrentSprite = Textures[index];
             Parent.Sprite.SourceRectangle = CurrentSprite;
-            Parent.Sprite.Scale = oldScale;
         }
         public void StepAnimation(int Updates)
         {
@@ -89,16 +88,29 @@ namespace EvDevEngine.EvDevEngine
         public void EndAnimation()
         {
             Animating = false;
-            Parent.Sprite.Scale = new Vector2(PreviousScale);
+            if (Parent.Sprite.FromRectangle == true)
+                Parent.Sprite.Scale = new Vector2(PreviousScale);
+            else Parent.Sprite.floatScale = floatPreviousScale;
+            
             Parent.Sprite.Sprite = previousTexture;
             Parent.Sprite.SourceRectangle = previousRectangle;
         }
         public void BeginAnimation(int Updates)
         {
-            this.ScaleMultiplier = (float)Parent.Sprite.Scale.X / Parent.Sprite.Sprite.Width;
+            if (Parent.Sprite.FromRectangle == true)
+            {
+                this.ScaleMultiplier = (float)Parent.Sprite.Scale.X / Parent.Sprite.Sprite.Width;
+                PreviousScale = new Vector2(Parent.Sprite.Scale);
+                Parent.Sprite.Scale *= Scale;
+            }
+            else
+            {
+                this.ScaleMultiplier = Parent.Sprite.floatScale;
+                floatPreviousScale = Parent.Sprite.floatScale;
+                Parent.Sprite.floatScale *= Scale;
+            }
             Log.Info("Beginning an");
-            PreviousScale = new Vector2(Parent.Sprite.Scale);
-            Parent.Sprite.Scale = new Vector2((float)width * ScaleMultiplier, (float)height * ScaleMultiplier);
+            
          
             CurrentSprite = Textures[0];
                                 
@@ -111,8 +123,6 @@ namespace EvDevEngine.EvDevEngine
 
             Parent.Sprite.Sprite = Spritesheet;
             Parent.Sprite.SourceRectangle = CurrentSprite;
-            oldScale = Parent.Sprite.Scale;
-            Parent.Sprite.Scale *= Scale;
         }
     }
 }
