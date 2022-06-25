@@ -15,6 +15,7 @@ namespace EvDevEngine.EvDevEngine
         {
             //Change this to fit your game.
             Log.Info("Loading game...");
+            base.Load();
         }
         public override void Update(GameTime gameTime)
         {

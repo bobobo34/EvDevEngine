@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Point = Microsoft.Xna.Framework.Point;
+using static EvDevEngine.EvDevEngine.Engine;
+
 namespace EvDevEngine.EvDevEngine
 {
     public class Vector2
@@ -49,7 +51,7 @@ namespace EvDevEngine.EvDevEngine
         
         public bool IsFloatingPoint(List<Sprite2D> exceptions)
         {
-            foreach(Sprite2D sprite in EvDevEngine.AllSprites)
+            foreach(Sprite2D sprite in AllSprites)
             {
                 if (exceptions.Contains(sprite)) continue;
                 if(sprite.Min.X <= X && X <= sprite.Max.X &&

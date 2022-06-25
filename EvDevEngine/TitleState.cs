@@ -7,6 +7,7 @@ using EvDevEngine.EvDevEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static EvDevEngine.EvDevEngine.XNAfuncs;
+using static EvDevEngine.EvDevEngine.Engine;
 using Vector2 = EvDevEngine.EvDevEngine.Vector2;
 using MonoGame.Extended.Tweening;
 namespace EvDevEngine
@@ -35,7 +36,7 @@ namespace EvDevEngine
         }
         public override void Load()
         {
-            game.BackgroundColor = Color.LightBlue;
+            BackgroundColor = Color.LightBlue;
             Font = game.GetFont(Fonts.Pixelated);
             TitleText = new BouncingFont(Font, "Killer Whale Mania!", new Vector2(game.ScreenCenter().X, game.ScreenCenter().Y - 200), game, 0.001f, 0.05f, 0.1f, 8f) { Scale = 1.5f };
 
@@ -48,7 +49,7 @@ namespace EvDevEngine
             AddObject(KW);
 
             Sprite2D OceanSprite = new Sprite2D(game, Vector2.Zero(), new Vector2(960f, 1080f), "FullOceanSprite", "BCK");
-            Ocean = new BackgroundOcean("BCK", OceanSprite, game);
+            Ocean = new BackgroundOcean("BCK", OceanSprite);
             AddObject(Ocean);
 
             BouncingFont StartButtonFont = new BouncingFont(Font, "Start", game, 0.001f, 0.05f, 0.1f, 5f);
@@ -62,19 +63,23 @@ namespace EvDevEngine
             OptionsButtonFont.Position = new Vector2(OptionsButton.Center);
             OptionsButton.OnClick = OptionsClick;
             AddUI(OptionsButton);
+
+            base.Load();
         }
 
         public override void Update(GameTime gameTime)
         {
             ///TODO: Add random kw jumps
             ///
-            if (EvDevEngine.EvDevEngine.Camera.Position.Y >= 540) { game.SetState<GameState>(); EvDevEngine.EvDevEngine.Camera.Position = new Microsoft.Xna.Framework.Vector2(EvDevEngine.EvDevEngine.Camera.Position.X, 0); }
+
+            if (Camera.Position.Y >= 540) { game.SetState<GameState>(); return; }
             if (MovingDown)
             {
-                float i = (-0.01f * (Math.Abs(EvDevEngine.EvDevEngine.Camera.Position.Y - 270)) / 270 + 0.02f) * 1.25f;
+                float i = (-0.01f * (Math.Abs(Camera.Position.Y - 270)) / 270 + 0.02f) * 1.25f;
                 Vector2 vec = new Vector2(0, Lerp(0, 540, i));
-                if (EvDevEngine.EvDevEngine.Camera.Position.Y + vec.Y >= 540) vec.Y = 540 - EvDevEngine.EvDevEngine.Camera.Position.Y;
-                EvDevEngine.EvDevEngine.Camera.Move(Vec2(vec));
+
+                if (Camera.Position.Y + vec.Y >= 540) vec.Y = 540 - Camera.Position.Y;
+                Camera.Move(Vec2(vec));
             }
             base.Update(gameTime);
         }

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EvDevEngine.EvDevEngine.Engine;
+
 
 namespace EvDevEngine.EvDevEngine
 {
     public class Object2D
     {
         public string ID;
-        public Sprite2D Sprite = null;
+        public Sprite2D? Sprite = null;
         public List<Component> Children = new List<Component>();
-        public EvDevEngine game;
-
+        public EvDevEngine Game;
         public Object2D(string ID, Sprite2D sprite)
         {
             this.ID = ID;
@@ -22,13 +23,13 @@ namespace EvDevEngine.EvDevEngine
         public Object2D(string ID)
         {
             this.ID = ID;
-            this.Sprite = null;
             RegisterObject();
         }
         public void AddComponent(Component Component)
         {
             Component.Parent = this;
             Children.Add(Component);
+            Component.OnLoad();
         }
 
         public void RemoveComponent<T>()
@@ -48,7 +49,7 @@ namespace EvDevEngine.EvDevEngine
         }
         public void RegisterObject()
         {
-            EvDevEngine.AllObjects.Add(this);
+            AllObjects.Add(this);
         }
         public void UnRegisterObject()
         {
@@ -56,8 +57,8 @@ namespace EvDevEngine.EvDevEngine
             {
                 obj.Destroy();
             }
-            game.CurrentState.RemoveObject(this);
-            EvDevEngine.AllObjects.Remove(this);
+            CurrentState.RemoveObject(this);
+            AllObjects.Remove(this);
             EvDevEngine.UnregisterSprite(Sprite);
         }
     }

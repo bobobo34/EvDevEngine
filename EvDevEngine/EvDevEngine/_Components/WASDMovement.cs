@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using static EvDevEngine.EvDevEngine.Engine;
+
 
 namespace EvDevEngine.EvDevEngine._Components
 {
@@ -20,23 +22,23 @@ namespace EvDevEngine.EvDevEngine._Components
 
         public override void OnUpdate(GameTime gameTime)
         {
-            if(!EvDevEngine.KeyboardInput.IsKeyDown(Keys.A) && !EvDevEngine.KeyboardInput.IsKeyDown(Keys.A) && !EvDevEngine.KeyboardInput.IsKeyDown(Keys.A) && !EvDevEngine.KeyboardInput.IsKeyDown(Keys.A))
+            if(!KeyboardInput.IsKeyDown(Keys.A) && !KeyboardInput.IsKeyDown(Keys.A) && !KeyboardInput.IsKeyDown(Keys.A) && !KeyboardInput.IsKeyDown(Keys.A))
             {
                 EndMove();
             }
-            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.W))
+            if (KeyboardInput.IsKeyDown(Keys.W))
             {
                 BeginMove(Direction.Up, gameTime);
             }
-            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.D)) 
+            if (KeyboardInput.IsKeyDown(Keys.D)) 
             {
                 BeginMove(Direction.Right, gameTime);
             }
-            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.S)) 
+            if (KeyboardInput.IsKeyDown(Keys.S)) 
             {
                 BeginMove(Direction.Down, gameTime);
             }
-            if (EvDevEngine.KeyboardInput.IsKeyDown(Keys.A)) 
+            if (KeyboardInput.IsKeyDown(Keys.A)) 
             {
                 BeginMove(Direction.Left, gameTime);
             }

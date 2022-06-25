@@ -24,7 +24,7 @@ namespace EvDevEngine.EvDevEngine
         public void AddObject(Object2D @object)
         {
             AllObjects.Add(@object);
-            @object.game = game;
+            @object.Game = game;
         }
         public void RemoveObject(int index)
         {
@@ -42,34 +42,34 @@ namespace EvDevEngine.EvDevEngine
         {
             uIElements.Remove(uielement);
         }
-        public abstract void Load();
+        public virtual void Load() { Engine.Camera.Position = new Microsoft.Xna.Framework.Vector2(0f); }
         public virtual void Draw(GameTime gameTime)
         {
             foreach(IUIElement element in uIElements)
             {
                 element.Draw(gameTime);
             }
-            foreach(Object2D @object in AllObjects)
+            foreach(Object2D @object in AllObjects.OrderBy(obj => obj.Sprite.layerDepth))
             {
                 Animation2D animation = @object.GetComponent<Animation2D>();
                 if (animation != null)
                 {
                     if (animation.condition() && !animation.Animating)
                     {
-                        animation.BeginAnimation(EvDevEngine.Updates);
+                        animation.BeginAnimation(Engine.Updates);
                     }
                     if (animation.Animating)
                     {
-                        animation.StepAnimation(EvDevEngine.Updates);
+                        animation.StepAnimation(Engine.Updates);
                     }
                     else
                     {
-                        @object.Sprite.DrawSelf();
+                        if (@object.Sprite != null) @object.Sprite.DrawSelf();
                     }
                 }
                 else
                 {
-                    @object.Sprite.DrawSelf();
+                    if(@object.Sprite != null) @object.Sprite.DrawSelf();
                 }
             }
         }

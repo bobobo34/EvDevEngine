@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using static EvDevEngine.EvDevEngine.XNAfuncs;
 using Color = Microsoft.Xna.Framework.Color;
+using static EvDevEngine.EvDevEngine.Engine;
+
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -44,6 +46,7 @@ namespace EvDevEngine.EvDevEngine
         public bool Centered = false;
         public float floatScale = 1f;
         public bool FromRectangle = false;
+
         public Vector2 Origin
         {
             get
@@ -153,10 +156,10 @@ namespace EvDevEngine.EvDevEngine
         {
             if(FromRectangle)
             {
-                game.sprites.Draw(Sprite, rectangle, SourceRectangle, Tint, GetRotation(Rotation), Vec2(Origin), Flipped, (int)layerDepth);
+                sprites.Draw(Sprite, rectangle, SourceRectangle, Tint, GetRotation(Rotation), Vec2(Origin), Flipped, (int)layerDepth / 2);
                 return;
             }
-            game.sprites.Draw(Sprite, Vec2(Position), SourceRectangle, Tint, GetRotation(Rotation), Vec2(Origin), floatScale, Flipped, (int)layerDepth);
+            sprites.Draw(Sprite, Vec2(Position), SourceRectangle, Tint, GetRotation(Rotation), Vec2(Origin), floatScale, Flipped, (int)layerDepth / 2);
         }
         public void ChangeSize(Vector2 OldScreenSize, Vector2 NewScreenSize)
         {

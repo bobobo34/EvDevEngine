@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using static EvDevEngine.EvDevEngine.Engine;
 
 namespace EvDevEngine.EvDevEngine
 {
     public static class XNAfuncs
     {
+        public static float ANTIROTATION = (float)(360 / Math.PI);
         public static float Lerp(float min, float max, float by)
         {
             return min + (max - min) * by;
@@ -23,20 +25,20 @@ namespace EvDevEngine.EvDevEngine
         }
         public static Rectangle ScreenRectangle(this EvDevEngine game)
         {
-            return new Rectangle(0, 0, game.graphics.PreferredBackBufferWidth, game.graphics.PreferredBackBufferHeight);
+            return new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         }
         public static bool IsClicked(Rectangle rectangle, bool rightmouse, ref bool ButtonDown)
         {
             //if mouse button is clicked on button
             ButtonState but;
-            if (rightmouse) but = EvDevEngine.MouseInput.RightButton;
-            else but = EvDevEngine.MouseInput.LeftButton;
+            if (rightmouse) but = MouseInput.RightButton;
+            else but = MouseInput.LeftButton;
 
             if (but == ButtonState.Released)
             {
                 ButtonDown = false;
             }
-            if (but == ButtonState.Pressed && rectangle.Contains(EvDevEngine.MousePos.X, EvDevEngine.MousePos.Y) && !ButtonDown)
+            if (but == ButtonState.Pressed && rectangle.Contains(MousePos.X, MousePos.Y) && !ButtonDown)
             {
                 ButtonDown = true;
                 return true;
@@ -77,7 +79,7 @@ namespace EvDevEngine.EvDevEngine
         }
         public static Vector2 ScreenCenter(this EvDevEngine game)
         {
-            return new Vector2(game.graphics.PreferredBackBufferWidth / 2, game.graphics.PreferredBackBufferHeight / 2);
+            return new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
         }
         public static Vector2 CenterDrawPoint(SpriteFont font, string str, Rectangle buttonrec)
         {
@@ -96,7 +98,7 @@ namespace EvDevEngine.EvDevEngine
         }
         public static float GetRotation(float degrees)
         {
-            return (((float)Math.PI / 360) * degrees);
+            return (float)Math.PI / 360 * degrees;
         }
         //change based on game
         public static SpriteFont GetFont(this EvDevEngine game, Fonts font)
@@ -108,6 +110,18 @@ namespace EvDevEngine.EvDevEngine
                 default:
                     throw new Exception();
             }
+        }
+        public static float ClosestTo(float curr, float op1, float op2)
+        {
+            return (Math.Abs(op1 - curr) < Math.Abs(op2 - curr)) ? op1 : op2;
+        }
+        public static int ClosestMultiple(int val, int multiple)
+        {
+            int rem = val % multiple;
+            int result = val - rem;
+            if (rem >= (multiple / 2))
+                result += multiple;
+            return result;
         }
     } 
 }

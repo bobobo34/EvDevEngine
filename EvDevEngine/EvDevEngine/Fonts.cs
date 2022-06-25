@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using static EvDevEngine.EvDevEngine.XNAfuncs;
 using Microsoft.Xna.Framework;
+using static EvDevEngine.EvDevEngine.Engine;
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -49,7 +50,7 @@ namespace EvDevEngine.EvDevEngine
         }
         public virtual void DrawSelf()
         {
-            game.sprites.DrawString(font, Text, Vec2(Position), SpriteColor, GetRotation(Rotation), Vec2(Origin), Scale * ScreenScale, SpriteEffects.None, 1);
+            sprites.DrawString(font, Text, Vec2(Position), SpriteColor, GetRotation(Rotation), Vec2(Origin), Scale * ScreenScale, SpriteEffects.None, 1);
         }
         //Vec2(new Vector2(game.ScreenCenter().X, game.ScreenCenter().Y - 200))
         //font, Text, Position, SpriteColor, GetRotation(FontRotation), Vec2(Origin), FontScale, SpriteEffects.None, 1

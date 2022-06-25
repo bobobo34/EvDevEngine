@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using EvDevEngine.EvDevEngine;
 using Microsoft.Xna.Framework.Input;
 using Vector2 = EvDevEngine.EvDevEngine.Vector2;
+using static EvDevEngine.EvDevEngine.Engine;
 using static EvDevEngine.EvDevEngine.XNAfuncs;
 namespace EvDevEngine.EvDevEngine
 {
@@ -78,7 +79,7 @@ namespace EvDevEngine.EvDevEngine
         }
         public void Draw(GameTime gameTime)
         {
-            game.sprites.Draw(BackgroundImage, BackgroundRectangle, null, Tint, 0f, Vec2(Origin), SpriteEffects.None, 0);
+            sprites.Draw(BackgroundImage, BackgroundRectangle, null, Tint, 0f, Vec2(Origin), SpriteEffects.None, 0);
             Font.DrawSelf();
 
         }
