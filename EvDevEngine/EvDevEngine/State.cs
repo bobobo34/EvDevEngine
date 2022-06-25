@@ -49,7 +49,7 @@ namespace EvDevEngine.EvDevEngine
             {
                 element.Draw(gameTime);
             }
-            foreach(Object2D @object in AllObjects.OrderBy(obj => obj.Sprite.layerDepth))
+            foreach(Object2D @object in AllObjects.OrderBy(obj => obj.Sprite?.layerDepth))
             {
                 Animation2D animation = @object.GetComponent<Animation2D>();
                 if (animation != null)

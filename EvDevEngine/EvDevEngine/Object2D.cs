@@ -11,7 +11,9 @@ namespace EvDevEngine.EvDevEngine
     public class Object2D
     {
         public string ID;
+            #nullable enable
         public Sprite2D? Sprite = null;
+            #nullable disable
         public List<Component> Children = new List<Component>();
         public EvDevEngine Game;
         public Object2D(string ID, Sprite2D sprite)
