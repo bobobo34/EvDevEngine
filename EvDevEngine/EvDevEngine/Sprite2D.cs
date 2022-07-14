@@ -10,7 +10,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using static EvDevEngine.EvDevEngine.XNAfuncs;
 using Color = Microsoft.Xna.Framework.Color;
 using static EvDevEngine.EvDevEngine.Engine;
-
+using System.Threading;
 
 namespace EvDevEngine.EvDevEngine
 {
@@ -20,12 +20,6 @@ namespace EvDevEngine.EvDevEngine
         Down,
         Left,
         Right
-    }
-    public enum LayerDepth
-    {
-        Background = 0,
-        MiddleGround = 1,
-        ForeGround = 2
     }
     public class Sprite2D
     {
@@ -42,15 +36,29 @@ namespace EvDevEngine.EvDevEngine
         public EvDevEngine game;
         public Rectangle? SourceRectangle = null;
         public Color Tint = Color.White;
-        public LayerDepth layerDepth = LayerDepth.MiddleGround;
+        public float layerDepth = 0f;
         public bool Centered = false;
         public float floatScale = 1f;
         public bool FromRectangle = false;
+            #nullable enable
+        public Vector2? NewOrigin;
+#nullable disable
+        public readonly Color[] TextureData;
 
+        public Matrix Transform
+        {
+            get
+            {
+                return Matrix.CreateTranslation(new Vector3(-Vec2(Origin), 0)) *
+                    Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation)) *
+                    Matrix.CreateTranslation(new Vector3(Vec2(Position), 0));
+            }
+        }
         public Vector2 Origin
         {
             get
             {
+                if (NewOrigin != null) return NewOrigin;
                 if (!Centered) return Vector2.Zero();
                 if (FromRectangle)
                     return new Vector2(Scale.X / 2, Scale.Y / 2);
@@ -63,7 +71,7 @@ namespace EvDevEngine.EvDevEngine
             {
                 if(FromRectangle)
                     return new Rectangle((int)Position.X, (int)Position.Y, (int)(Scale.X * ScreenScale), (int)(Scale.Y * ScreenScale));
-                else return new Rectangle((int)Position.X, (int)Position.Y, (int)(Sprite.Width * floatScale * ScreenScale), (int)(Sprite.Height * floatScale * ScreenScale));
+                return new Rectangle((int)Position.X - (int)Origin.X, (int)Position.Y - (int)Origin.Y, (int)(Sprite.Width * floatScale), (int)(Sprite.Height * floatScale));
             }
         }
 
@@ -100,6 +108,14 @@ namespace EvDevEngine.EvDevEngine
             this.game = game;
             Sprite = game.Content.Load<Texture2D>(Directory);
             OriginalSprite = Sprite;
+            //var textureDataGathered = new ManualResetEvent(false);
+
+            TextureData = new Color[Sprite.Width * Sprite.Height];
+            Sprite.GetData(TextureData);
+            
+
+           // textureDataGathered.WaitOne();
+           // textureDataGathered.Reset();
             EvDevEngine.RegisterSprite(this);
         }
         public Sprite2D(EvDevEngine game, Vector2 Position, float Scale, string Directory, string Tag, bool Centered = false)
@@ -113,14 +129,34 @@ namespace EvDevEngine.EvDevEngine
             Sprite = game.Content.Load<Texture2D>(Directory);
             OriginalSprite = Sprite;
 
+            //var textureDataGathered = new ManualResetEvent(false);
+
+            TextureData = new Color[Sprite.Width * Sprite.Height];
+
+                Sprite.GetData(TextureData);
+
+
+            //textureDataGathered.WaitOne();
+            //textureDataGathered.Reset();
+
             EvDevEngine.RegisterSprite(this);
         }
-        public Sprite2D(Game game, string Directory)
+        public Sprite2D(EvDevEngine game, string Directory)
         {
             this.IsReference = true;
             this.Directory = Directory;
 
             Sprite = game.Content.Load<Texture2D>(Directory);
+            //var textureDataGathered = new ManualResetEvent(false);
+
+            TextureData = new Color[Sprite.Width * Sprite.Height];
+            //Log.Info(Directory);
+
+                Sprite.GetData(TextureData);
+
+
+            //textureDataGathered.WaitOne();
+            //textureDataGathered.Reset();
             OriginalSprite = Sprite;
 
         }
@@ -134,6 +170,21 @@ namespace EvDevEngine.EvDevEngine
             this.Tag = Tag;
 
             Sprite = reference.Sprite;
+            //var textureDataGathered = new ManualResetEvent(false);
+
+            TextureData = reference.TextureData;
+            Log.Info(Directory);
+
+            //game.EnqueueAction(() =>
+            //{
+            //    Sprite.GetData(TextureData);
+            //    DataReceived = true;
+
+            //    //textureDataGathered.Set();
+            //});
+
+            //textureDataGathered.WaitOne();
+            //textureDataGathered.Reset();
             OriginalSprite = Sprite;
 
 
@@ -148,18 +199,29 @@ namespace EvDevEngine.EvDevEngine
 
             Sprite = reference.Sprite;
             OriginalSprite = Sprite;
+            //var textureDataGathered = new ManualResetEvent(false);
 
+            TextureData = reference.TextureData;
 
+            //game.EnqueueAction(() =>
+            //{
+            //    Sprite.GetData(TextureData);
+            //    DataReceived = true;
+
+            //    //textureDataGathered.Set();
+            //});
+            //textureDataGathered.WaitOne();
+            //textureDataGathered.Reset();
             EvDevEngine.RegisterSprite(this);
         }
         public void DrawSelf()
         {
             if(FromRectangle)
             {
-                sprites.Draw(Sprite, rectangle, SourceRectangle, Tint, GetRotation(Rotation), Vec2(Origin), Flipped, (int)layerDepth / 2);
+                sprites.Draw(Sprite, rectangle, SourceRectangle, Tint, MathHelper.ToRadians(Rotation), Vec2(Origin), Flipped, 0);
                 return;
             }
-            sprites.Draw(Sprite, Vec2(Position), SourceRectangle, Tint, GetRotation(Rotation), Vec2(Origin), floatScale, Flipped, (int)layerDepth / 2);
+            sprites.Draw(Sprite, Vec2(Position), SourceRectangle, Tint, MathHelper.ToRadians(Rotation), Vec2(Origin), floatScale, Flipped, 0);
         }
         public void ChangeSize(Vector2 OldScreenSize, Vector2 NewScreenSize)
         {
@@ -169,8 +231,69 @@ namespace EvDevEngine.EvDevEngine
         }
         public void DestroySelf()
         {
-
             EvDevEngine.UnregisterSprite(this);
+        }
+        public virtual void OnCollide(Sprite2D sprite) { }
+        public bool Intersects(Sprite2D sprite)
+        {
+            // Calculate a matrix which transforms from A's local space into
+            // world space and then into B's local space
+            var transformAToB = this.Transform * Matrix.Invert(sprite.Transform);
+
+            // When a point moves in A's local space, it moves in B's local space with a
+            // fixed direction and distance proportional to the movement in A.
+            // This algorithm steps through A one pixel at a time along A's X and Y axes
+            // Calculate the analogous steps in B:
+            var stepX = Microsoft.Xna.Framework.Vector2.TransformNormal(Microsoft.Xna.Framework.Vector2.UnitX, transformAToB);
+            var stepY = Microsoft.Xna.Framework.Vector2.TransformNormal(Microsoft.Xna.Framework.Vector2.UnitY, transformAToB);
+
+            // Calculate the top left corner of A in B's local space
+            // This variable will be reused to keep track of the start of each row
+            var yPosInB = Microsoft.Xna.Framework.Vector2.Transform(Microsoft.Xna.Framework.Vector2.Zero, transformAToB);
+
+            for (int yA = 0; yA < this.rectangle.Height; yA++)
+            {
+                // Start at the beginning of the row
+                var posInB = yPosInB;
+
+                for (int xA = 0; xA < this.rectangle.Width; xA++)
+                {
+                    // Round to the nearest pixel
+                    var xB = (int)Math.Round(posInB.X);
+                    var yB = (int)Math.Round(posInB.Y);
+
+                    if (0 <= xB && xB < sprite.rectangle.Width &&
+                        0 <= yB && yB < sprite.rectangle.Height)
+                    {
+                        // Get the colors of the overlapping pixels
+                        Color colourA = Color.Transparent, colourB = Color.White;
+                        try
+                        {
+                            colourA = this.TextureData[xA + yA * this.rectangle.Width];
+                            colourB = sprite.TextureData[xB + yB * sprite.rectangle.Width];
+                        }
+                        catch
+                        {
+                            Log.Info((this.TextureData.Length, xA + yA * this.rectangle.Width, xA, yA, this.rectangle.Width));
+                            Log.Info((sprite.TextureData.Length, xB + yB * sprite.rectangle.Width, xB, yB, sprite.rectangle.Width));
+                        }
+                        // If both pixel are not completely transparent
+                        if (colourA.A != 0 && colourB.A != 0)
+                        {
+                            return true;
+                        }
+                    }
+
+                    // Move to the next pixel in the row
+                    posInB += stepX;
+                }
+
+                // Move to the next row
+                yPosInB += stepY;
+            }
+
+            // No intersection found
+            return false;
         }
     }
 }

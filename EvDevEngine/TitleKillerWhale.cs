@@ -18,7 +18,7 @@ namespace EvDevEngine
             TKWMove movement = new TKWMove(game);
 
             AddComponent(movement);
-            Animation2D swim = new Animation2D(game.Content.Load<Texture2D>("KillerWhaleSwim"), 65, 30, 20, IsSwimming, true);
+            Animation2D swim = new Animation2D(game.Content.Load<Texture2D>("KillerWhaleSwim"), 195, 90, 20, IsSwimming, true);
             AddComponent(swim);
         }
         bool IsSwimming()

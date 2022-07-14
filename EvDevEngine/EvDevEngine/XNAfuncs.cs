@@ -45,18 +45,35 @@ namespace EvDevEngine.EvDevEngine
             }
             return false;
         }
-        public static List<Rectangle> SpliceSpriteSheet(Texture2D spritesheet, int width, int height)
+        public static List<Texture2D> SpliceSpriteSheet(Texture2D spritesheet, int width, int height)
         {
-            List<Rectangle> rectangles = new List<Rectangle>();
+            List<Texture2D> textures = new List<Texture2D>();
             for(int x = 0; x < spritesheet.Width; x += width)
             {
                 for(int y = 0; y < spritesheet.Height; y += height)
                 {
-                    rectangles.Add(new Rectangle(x, y, width, height));
+                    textures.Add(spritesheet.CreateTexture(new Rectangle(x, y, width, height)));
                 }
             }
-            return rectangles;
+            return textures;
         }
+        
+            /// <summary>
+            /// Creates a new texture from an area of the texture.
+            /// </summary>
+            /// <param name="graphics">The current GraphicsDevice</param>
+            /// <param name="rect">The dimension you want to have</param>
+            /// <returns>The partial Texture.</returns>
+        public static Texture2D CreateTexture(this Texture2D src, Rectangle rect)
+        {
+            Texture2D tex = new Texture2D(Engine.GraphicsDevice, rect.Width, rect.Height);
+            int count = rect.Width * rect.Height;
+            Color[] data = new Color[count];
+            src.GetData(0, rect, data, 0, count);
+            tex.SetData(data);
+            return tex;
+        }
+        
         /// <summary>
         /// Converts EvDevEngine vector2 to XNA vector2 for use in things like rectangles.
         /// </summary>

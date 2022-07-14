@@ -42,7 +42,18 @@ namespace EvDevEngine.EvDevEngine
         {
             uIElements.Remove(uielement);
         }
-        public virtual void Load() { Engine.Camera.Position = new Microsoft.Xna.Framework.Vector2(0f); }
+        public T GetObject<T>()
+        {
+            return (T)Convert.ChangeType(AllObjects.Find(x => x.GetType() == typeof(T)), typeof(T));
+        }
+        public T GetObject<T>(int index)
+        {
+            return (T)Convert.ChangeType(AllObjects.Where(x => x.GetType() == typeof(T)).ToList()[index], typeof(T));
+        }
+        public virtual void Load() 
+        { 
+            Engine.Camera.Position = new Microsoft.Xna.Framework.Vector2(0f); 
+        }
         public virtual void Draw(GameTime gameTime)
         {
             foreach(IUIElement element in uIElements)
@@ -71,6 +82,7 @@ namespace EvDevEngine.EvDevEngine
                 {
                     if(@object.Sprite != null) @object.Sprite.DrawSelf();
                 }
+                foreach (var component in @object.Children) component.OnDraw(gameTime);
             }
         }
         public virtual void Update(GameTime gameTime)

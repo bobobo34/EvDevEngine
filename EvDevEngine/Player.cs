@@ -29,7 +29,9 @@ namespace EvDevEngine
         public override void OnUpdate(GameTime gameTime)
         {
             var direction = MousePos - Parent.Sprite.Position;
-            Parent.Gun.Rotation = (float)(Math.Atan2(direction.Y, direction.X) * XNAfuncs.ANTIROTATION);
+            if (direction.X < 0) { Parent.Gun.Flipped = SpriteEffects.FlipVertically; Parent.Helmet.Flipped = SpriteEffects.FlipHorizontally; Parent.Sprite.Flipped = SpriteEffects.FlipHorizontally; }
+            else { Parent.Gun.Flipped = SpriteEffects.None; Parent.Helmet.Flipped = SpriteEffects.None; Parent.Sprite.Flipped = SpriteEffects.None; }
+            Parent.Gun.Rotation = (float)MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.X));
             base.OnUpdate(gameTime);
         }
     }

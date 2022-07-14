@@ -25,7 +25,13 @@ namespace EvDevEngine.EvDevEngine
         public static SpriteBatch sprites;
         public static OrthographicCamera Camera;
         public static EvDevEngine game;
-
+        public static GraphicsDevice GraphicsDevice
+        {
+            get
+            {
+                return game.GraphicsDevice;
+            }
+        }
         public static Vector2 MousePos
         {
             get
@@ -56,14 +62,12 @@ namespace EvDevEngine.EvDevEngine
         private string Title;
         public bool UpdateObjectsBefore = true;
 
-        
-
-        
-        
-
-        
-
-        
+        private Queue<Action> _actions = new Queue<Action>();
+        public void EnqueueAction(Action action)
+        {
+            if (action == null) return;
+            _actions.Enqueue(action);
+        }
 
         public bool DoneLoading = false;
         public EvDevEngine(string Title) : base()
@@ -77,7 +81,6 @@ namespace EvDevEngine.EvDevEngine
             Engine.graphics.PreferredBackBufferWidth = 960;
             Engine.graphics.PreferredBackBufferHeight = 540;
             Engine.graphics.ApplyChanges();
-
             
 
             this.Content.RootDirectory = "Content";
@@ -93,14 +96,20 @@ namespace EvDevEngine.EvDevEngine
         }
         public void SetState(int index)
         {
-            foreach (var obj in Engine.AllObjects.ToList()) Engine.AllObjects.Remove(obj);
+            foreach (var obj in Engine.AllObjects.ToList())
+            {
+                Engine.AllObjects.Remove(obj);
+            }
             Log.Info($"changing state to {Engine.States[index]}");
             Engine.CurrentState = Engine.States[index];
             Engine.CurrentState.Load();                       
         }
         public void SetState<T>()
         {
-            foreach (var obj in Engine.AllObjects.ToList()) Engine.AllObjects.Remove(obj);
+            foreach (var obj in Engine.AllObjects.ToList())
+            {
+                Engine.AllObjects.Remove(obj);
+            }
             int index = Engine.States.FindIndex(s => s.GetType() == typeof(T));
             Log.Info($"changing state to {Engine.States[index]}");
             Engine.CurrentState = Engine.States[index];
@@ -167,6 +176,10 @@ namespace EvDevEngine.EvDevEngine
         {
             Engine.KeyboardInput = Keyboard.GetState();
             Engine.MouseInput = Mouse.GetState();
+            while (_actions.Count > 0)
+            {              
+                _actions.Dequeue().Invoke();
+            }
             OnUpdate(gameTime);
         }
 

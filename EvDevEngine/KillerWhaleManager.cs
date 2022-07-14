@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using static EvDevEngine.EvDevEngine.Engine;
 using Vector2 = EvDevEngine.EvDevEngine.Vector2;
 using System.Timers;
+using System.Threading;
 
 namespace EvDevEngine
 {
@@ -25,8 +26,9 @@ namespace EvDevEngine
     {
         float difficulty = 0;
         Random random = new Random();
-        Sprite2D KWSprite = new Sprite2D(game, "KillerWhale");
-        Timer timer = new Timer(2000f);
+        Sprite2D KWSprite = new Sprite2D(Engine.game, "KillerWhale");
+        System.Timers.Timer timer = new System.Timers.Timer(2000f);
+        ManualResetEvent spritecreated = new ManualResetEvent(false);
         
         public WhaleSpawner() { }
 
@@ -53,9 +55,16 @@ namespace EvDevEngine
                 var maxy = random.Next(Height + 200, Height + 400);
                 y = (int)XNAfuncs.ClosestTo(y, miny, maxy);
             }
-            var sprite = new Sprite2D(new Vector2(x, y), 3f, KWSprite, "kw", true);
-            if (x > game.ScreenCenter().X) sprite.Flipped = SpriteEffects.FlipVertically;
-            CurrentState.AddObject(new KillerWhale("kw", sprite, game, 0.005f + difficulty / 100000));
+            Sprite2D sprite = null;
+            game.EnqueueAction(() =>
+            {
+                sprite = new Sprite2D(new Vector2(x, y), 1f, KWSprite, "kw", true) { layerDepth = 5 };
+                if (x > game.ScreenCenter().X) sprite.Flipped = SpriteEffects.FlipVertically;
+                CurrentState.AddObject(new KillerWhale("kw", sprite, game, 0.005f + difficulty / 100000));
+                spritecreated.Set();
+            });
+            spritecreated.WaitOne();
+            spritecreated.Reset();
             
         }
         public override void OnUpdate(GameTime gameTime)

@@ -17,6 +17,7 @@ namespace EvDevEngine
         public BackgroundOcean Ocean;
         public KillerWhaleManager Manager;
         public Player player;
+       
         //private Random random = new Random();
         public GameState(EvDevEngine.EvDevEngine game) : base("GameScreen", game)
         {
@@ -28,16 +29,23 @@ namespace EvDevEngine
 
 
 
-
-            Sprite2D OceanSprite = new Sprite2D(game, Vector2.Zero(), new Vector2(960f, 540f), "OceanSprite", "BCK");
+            Log.Info("ocean");
+            Sprite2D OceanSprite = new Sprite2D(game, Vector2.Zero(), new Vector2(960f, 540f), "OceanSprite", "BCK") { layerDepth = 0f };
             Ocean = new BackgroundOcean("BCK", OceanSprite, true);
             AddObject(Ocean);
+            
+            Log.Info("player");
 
-            var playersprite = new Sprite2D(game, game.ScreenCenter(), 4f, "PlayerBody", "player", true);
-            var helmetsprite = new Sprite2D(game, new Vector2(playersprite.Position.X, playersprite.Position.Y - 70f), 4f, "DefaultHelmet", "helmet", true) { layerDepth = LayerDepth.ForeGround };
-            var gunsprite = new Sprite2D(game, new Vector2(playersprite.Position.X + 2, playersprite.Position.Y - 35), 4f, "DefaultGun", "gun", true) { layerDepth = LayerDepth.ForeGround };
+            var playersprite = new Sprite2D(game, game.ScreenCenter(), 1f, "PlayerBody", "player", true);
+            Log.Info("helmet");
+
+            var helmetsprite = new Sprite2D(game, new Vector2(playersprite.Position.X, playersprite.Position.Y - 70f), 1f, "DefaultHelmet", "helmet", true) { layerDepth = 2f };
+            Log.Info("gunj");
+
+            var gunsprite = new Sprite2D(game, new Vector2(playersprite.Position.X, playersprite.Position.Y - 50), 1f, "DefaultGun", "gun", true) { layerDepth = 3f, NewOrigin = new Vector2(5, 5) };
             player = new Player("player", playersprite, game) { Gun = gunsprite, Helmet = helmetsprite };
             AddObject(player);
+            Log.Info("manager");
 
             Manager = new KillerWhaleManager("KWM");
             AddObject(Manager);
@@ -56,9 +64,9 @@ namespace EvDevEngine
         
         public override void Draw(GameTime gameTime)
         {
+            base.Draw(gameTime);
             player.Helmet.DrawSelf();
             player.Gun.DrawSelf();
-            base.Draw(gameTime);
         }
         public override void ResizeAll(Vector2 oldScreenSize, Vector2 newScreenSize)
         {

@@ -10,9 +10,9 @@ namespace EvDevEngine.EvDevEngine
 {
     public class Animation2D : Component
     {
-        public List<Rectangle> Textures;
+        public List<Texture2D> Textures;
         public Texture2D Spritesheet;
-        public Rectangle CurrentSprite;
+        public Texture2D CurrentSprite;
         public Func<bool> condition;
         public bool Animating = false;
         public int BeginAnimFrame;
@@ -75,7 +75,7 @@ namespace EvDevEngine.EvDevEngine
                 }
             }
             CurrentSprite = Textures[index];
-            Parent.Sprite.SourceRectangle = CurrentSprite;
+            Parent.Sprite.Sprite = CurrentSprite;
         }
         public void StepAnimation(int Updates)
         {
@@ -97,6 +97,7 @@ namespace EvDevEngine.EvDevEngine
         }
         public void BeginAnimation(int Updates)
         {
+            //if (!Parent.Sprite.DataReceived) return;
             if (Parent.Sprite.FromRectangle == true)
             {
                 this.ScaleMultiplier = (float)Parent.Sprite.Scale.X / Parent.Sprite.Sprite.Width;
@@ -109,7 +110,6 @@ namespace EvDevEngine.EvDevEngine
                 floatPreviousScale = Parent.Sprite.floatScale;
                 Parent.Sprite.floatScale *= Scale;
             }
-            Log.Info("Beginning an");
             
          
             CurrentSprite = Textures[0];
@@ -122,7 +122,7 @@ namespace EvDevEngine.EvDevEngine
             previousRectangle = Parent.Sprite.SourceRectangle;
 
             Parent.Sprite.Sprite = Spritesheet;
-            Parent.Sprite.SourceRectangle = CurrentSprite;
+            Parent.Sprite.Sprite = CurrentSprite;
         }
     }
 }

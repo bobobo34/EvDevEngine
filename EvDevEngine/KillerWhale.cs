@@ -18,12 +18,11 @@ namespace EvDevEngine
 
         public KillerWhale(string ID, Sprite2D sprite, EvDevEngine.EvDevEngine game, float speed) : base(ID, sprite)
         {
-            Animation2D swim = new Animation2D(game.Content.Load<Texture2D>("KillerWhaleSwim"), 65, 30, 10, () => { return true; }, true);
+            Animation2D swim = new Animation2D(game.Content.Load<Texture2D>("KillerWhaleSwim"), 195, 90, 10, () => { return true; }, true);
             AddComponent(swim);
             var move = new MoveToCenter(game, sprite.Position, speed);
             AddComponent(move);
         }
-        
     }
     public class MoveToCenter : Movement
     {
@@ -32,29 +31,28 @@ namespace EvDevEngine
         public float angle;
         public EvDevEngine.EvDevEngine game;
         private Vector2 originalpos;
+
         public MoveToCenter(EvDevEngine.EvDevEngine game, Vector2 position, float speed)
         {
             MovementSpeed = speed;
             originalpos = position;
             this.game = game;
-            Log.Info(originalpos.X);
-            Log.Info(originalpos.Y);
             var direction = game.ScreenCenter() - originalpos;
-            angle = (float)(Math.Atan2(direction.Y, direction.X) * XNAfuncs.ANTIROTATION);
-            Log.Info(angle);
+            angle = MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.X));
         }                                                         
         int times = 1;
         public override void OnUpdate(GameTime gameTime)
         {
             //todo: sine wave movement
-            //angle += (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * frequency) * magnitude;
-            Parent.Sprite.Rotation = angle;
+            angle += (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * frequency) * magnitude;
             Parent.Sprite.Position = XNAfuncs.Lerp(originalpos, game.ScreenCenter(), MovementSpeed * times);
             times++;
+            Parent.Sprite.Rotation = angle;
 
 
-            if (Parent.Sprite.Position.Rounded().Equals(game.ScreenCenter())) { Parent.UnRegisterObject(); Parent = null; }
+            if (Parent.Sprite.Intersects(CurrentState.GetObject<Player>().Sprite) || Parent.Sprite.Intersects(CurrentState.GetObject<Player>().Helmet)) { Parent.UnRegisterObject(); Parent = null; }
             //base.OnUpdate(gameTime);
         }
+ 
     }
 }

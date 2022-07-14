@@ -40,11 +40,11 @@ namespace EvDevEngine
             Font = game.GetFont(Fonts.Pixelated);
             TitleText = new BouncingFont(Font, "Killer Whale Mania!", new Vector2(game.ScreenCenter().X, game.ScreenCenter().Y - 200), game, 0.001f, 0.05f, 0.1f, 8f) { Scale = 1.5f };
 
-            Sprite2D SunSprite = new Sprite2D(game, Vector2.Zero(), new Vector2(140, 140), "SunSprite", "Sun");
+            Sprite2D SunSprite = new(game, Vector2.Zero(), new Vector2(140, 140), "SunSprite", "Sun");
             sun = new Sun("Sun", SunSprite, game);
             AddObject(sun);
 
-            Sprite2D KWSprite = new Sprite2D(game, new Vector2(game.ScreenCenter().X, game.ScreenCenter().Y + 275), new Vector2(227.5f, 105f), "KillerWhale", "KW", true);
+            Sprite2D KWSprite = new Sprite2D(game, new Vector2(game.ScreenCenter().X, game.ScreenCenter().Y + 150), new Vector2(227.5f, 105f), "KillerWhale", "KW", true) { layerDepth = 1f };
             KW = new TitleKillerWhale("TKW", KWSprite, game);      
             AddObject(KW);
 
